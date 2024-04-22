@@ -1,5 +1,24 @@
 const User = require("../models/user");
 module.exports = {
+  search(req, res) {
+    const user = req.body; //Datos del usuario desde el front-end
+    User.login(user, (err, data) => {
+      if (err) {
+        return res.status(501).json({
+          success: false,
+          message: "Error al consultar el usuario",
+          error: err,
+        });
+      }
+      console.log("Controller Usuarios encontrados: ", data.length); //for debugging
+      return res.status(201).json({
+        success: true,
+        message: "Usuarios encontrados:" + data.length,
+        data: data, //Datos desde Model
+      });
+    });
+  },
+
   register(req, res) {
     const user = req.body; //Datos del cliente
     User.create(user, (err, data) => {
@@ -131,5 +150,4 @@ module.exports = {
       });
     });
   },
-
-}
+};
