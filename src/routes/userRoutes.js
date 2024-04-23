@@ -3,11 +3,15 @@ const router = Router(); //routes
 const usersController = require("../controllers/usersController");
 router.post("/usuario", usersController.register);
 router.get("/usuario", usersController.getAll);
+router.post("/usuario/login", usersController.searchLogin);
 router.get("/usuario/:id", usersController.getById);
-router.get("/principal",usersController.mainPage);
-router.get("/principal/:id",usersController.mainPageById);
-router.get("/evento/id",usersController.showEvent);
-router.get("/busqueda/:id",usersController.searchEventById);
-router.get("/usuario/login",usersController.login);
+router.get("/principal", usersController.mainPage);
+router.get("/principal/:id", usersController.mainPageById);
+router.get("/evento/id", usersController.showEvent);
+router.get("/busqueda/nombre", usersController.searchEventById);
+router.post("/usuario/:id/nombre",usersController.updateNameUser);
+router.post("/usuario/correo",usersController.updateEmailUser);
+router.post("/usuario/contraseña",usersController.updatePasswordUser);
+router.post("/usuario/imagenPerfil",usersController.updateImageProfileUser);
 
 module.exports = router;

@@ -1,8 +1,10 @@
 const User = require("../models/user");
 module.exports = {
-  search(req, res) {
+
+  //Peticion login
+  searchLogin(req, res) {
     const user = req.body; //Datos del usuario desde el front-end
-    User.login(user, (err, data) => {
+    User.searchLogin(user, (err, data) => {
       if (err) {
         return res.status(501).json({
           success: false,
@@ -19,9 +21,10 @@ module.exports = {
     });
   },
 
+  //Peticion registrar usuario
   register(req, res) {
     const user = req.body; //Datos del cliente
-    User.create(user, (err, data) => {
+    User.register(user, (err, data) => {
       if (err) {
         return res.status(501).json({
           success: false,
@@ -37,6 +40,7 @@ module.exports = {
     });
   },
 
+  //Peticion obtener usuarios
   getAll(req, res) {
     User.getAll((err, data) => {
       if (err) {
@@ -54,6 +58,7 @@ module.exports = {
     });
   },
 
+  //Peticion obtener usuarios segun id
   getById(req, res) {
     const id = req.params.id;
     User.getById(id, (err, data) => {
@@ -72,8 +77,7 @@ module.exports = {
     });
   },
 
-  //peticion para ingresar pagina principal
-
+  //Peticion para ingresar pagina principal
   mainPage(req, res) {
     User.mainPage((err, data) => {
       if (err) {
@@ -91,8 +95,7 @@ module.exports = {
     });
   },
 
-  //peticion para ingresar pagina principal segun su id de usuario
-
+  //Peticion ingresar pagina principal segun id de usuario
   mainPageById(req, res) {
     const id = req.params.id;
     User.mainPagebyId(id, (err, data) => {
@@ -112,7 +115,6 @@ module.exports = {
   },
 
   //Peticion ver detalles de evento
-
   showEvent(req, res) {
     User.showEvent((err, data) => {
       if (err) {
@@ -130,7 +132,7 @@ module.exports = {
     });
   },
 
-  //Peticion buscar evento por id
+  //Peticion buscar evento segun id
 
   searchEventById(req, res) {
     console.log("En el controlador");
@@ -150,4 +152,86 @@ module.exports = {
       });
     });
   },
+  
+  //Peticion cambiar nombre usuario
+  updateNameUser(req, res) {
+    const id = req.body;
+    console.log("En el controlador ", id);
+    User.updateNameUser(id, (err, data) => {
+      if (err) {
+        return res.status(501).json({
+          success: false,
+          message: "Error al actualizar nombre de usuario",
+          error: err,
+        });
+      }
+      return res.status(202).json({
+        success: true,
+        message: "Peticion aceptada",
+        data: data,
+      });
+    });
+  },
+
+  //Peticion cambiar correo usuario
+  updateEmailUser(req, res) {
+    console.log("En el controlador");
+    const id = body.id;
+    User.updateEmailUser(id, (err, data) => {
+      if (err) {
+        return res.status(501).json({
+          success: false,
+          message: "Error al actualizar correo usuario",
+          error: err,
+        });
+      }
+      return res.status(202).json({
+        success: true,
+        message: "Peticion aceptada",
+        data: data,
+      });
+    });
+  },
+
+  //Peticion cambiar contraseña usuario
+  updatePasswordUser(req, res) {
+    console.log("En el controlador");
+    const id = body.id;
+    User.updatePasswordUser(id, (err, data) => {
+      if (err) {
+        return res.status(501).json({
+          success: false,
+          message: "Error al actualizar contraseña",
+          error: err,
+        });
+      }
+      return res.status(202).json({
+        success: true,
+        message: "Peticion aceptada",
+        data: data,
+      });
+    });
+  },
+
+  //Peticion cambiar imagen usuario
+  updateImageProfileUser(req, res) {
+    console.log("En el controlador");
+    const id = body.id;
+    User.updateImageProfileUser(id, (err, data) => {
+      if (err) {
+        return res.status(501).json({
+          success: false,
+          message: "Error al actualizar",
+          error: err,
+        });
+      }
+      return res.status(202).json({
+        success: true,
+        message: "Peticion aceptada",
+        data: data,
+      });
+    });
+  },
+
 };
+//LA CHANGA ATORADA EN EL ALAMBRE
