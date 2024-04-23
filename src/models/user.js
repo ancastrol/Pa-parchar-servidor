@@ -1,40 +1,40 @@
 const db = require("../config/config");
 const User = {};
-User.create = (user, result) => {
-  const sql = `
-                INSERT INTO users(
-                email,
-                name,
-                lastname,
-                phone,
-                image,
-                password,
-                created_at,
-                updated_at
-                )
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+
+
+User.register = (user, result) => {
+  const sql = `SELECT COUNT(*) AS datos_existentes FROM usuario WHERE correo = ?`;
   db.query(
-    sql,
-    [
-      user.email,
-      user.name,
-      user.lastname,
-      user.phone,
-      user.image,
-      user.password,
-      new Date(),
-      new Date(),
-    ],
-    (err, res) => {
+    sql, [user.correo], (err, res) => {
       if (err) {
-        console.log("error: ", err);
+        console.log('error: ', err);
         result(err, null);
-      } else {
-        console.log("Id del nuevo Usuario: ", res.insertId);
-        result(null, res.insertId);
+      }
+      else {
+        console.log('Datos existentes: ', err);
+        if (res[0].datos_existentes > 0) {
+          result(null, { message: 'Correo ya registrado' });
+        }
+        else {
+          const sql = `INSERT INTO usuario (nombre, rol, correo, contrasenia) VALUES (?, ?, ?, ?)`;
+          db.query(
+            sql,
+            [user.nombre, user.rol, user.correo, user.contrasenia],
+            (err, res) => {
+              if (err) {
+                console.log('err: ', err);
+                result(err, null);
+              }
+              else {
+                console.log('Id del nuevo usuario: ', res.insertId);
+                result(null, res.insertId, { message: 'Usuario creado' });
+              }
+            }
+          )
+        }
       }
     }
-  );
+  )
 };
 
 User.getAll = (result) => {
@@ -112,12 +112,13 @@ User.showEvent = (result) => {
 
 //Peticion buscar evento por id
 
-User.searchEventById = (id, result) => {
-  db.query(`SELECT * FROM evento WHERE id_evento = ${id}`, (err, res) => {
+User.searchEventById = (result) => {
+  db.query(`SELECT * FROM evento WHERE nombre_evento LIKE '%?%' OR DATE_FORMAT(fecha_hora, '%Y-%m-%d %H:%i:%s') LIKE '%?%' OR id_categoria IN  (select id_categoria FROM categoria_evento where descrip_cat LIKE '%?%') OR lugar LIKE '%?%'`, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
-    } else {
+    } 
+    else{
       result(null, res);
     }
   });

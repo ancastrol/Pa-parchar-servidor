@@ -8,6 +8,6 @@ router.get("/principal",usersController.mainPage);
 router.get("/principal/:id",usersController.mainPageById);
 router.get("/evento/id",usersController.showEvent);
 router.get("/busqueda/:id",usersController.searchEventById);
-router.get("/usuario/login",usersController.login);
+//router.get("/usuario/login",usersController.login);
 
 module.exports = router;
