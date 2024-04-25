@@ -135,8 +135,13 @@ module.exports = {
 
   searchEventById(req, res) {
     console.log("En el controlador");
-    const id = req.params.id;
-    User.searchEventById(id, (err, data) => {
+    const nombre_evento = req.query.nombre_evento||null;
+    const fecha_hora = req.query.fecha_hora||null;
+    const id_categoria = req.query.id_categoria ||null;
+    const lugar = req.query.lugar ||null;
+    const operation = {nombre_evento:nombre_evento, fecha_hora:fecha_hora, id_categoria:id_categoria, lugar:lugar};
+
+    User.searchEventById(operation,(err, data) => {
       if (err) {
         return res.status(501).json({
           success: false,
@@ -247,7 +252,7 @@ module.exports = {
       if (!data) {
         return res.status(404).json({
           success: false,
-          message: 'Usuario no encontrado',
+          message: "Usuario no encontrado",
         });
       }
       return res.status(202).json({

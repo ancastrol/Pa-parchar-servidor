@@ -117,18 +117,50 @@ User.showEvent = (result) => {
 };
 
 //Peticion buscar evento por id
-User.searchEventById = (res, result) => {
-  db.query(
-    `SELECT * FROM evento WHERE nombre_evento LIKE '%?%' OR DATE_FORMAT(fecha_hora, '%Y-%m-%d %H:%i:%s') LIKE '%?%' OR id_categoria IN  (select id_categoria FROM categoria_evento where descrip_cat LIKE '%?%') OR lugar LIKE '%?%'`,
-    (err, res) => {
-      if (err) {
-        console.log("error: ", err);
-        result(err, null);
-      } else {
+User.searchEventById = (operation, result) => {
+  console.log("lol");
+  const sql = `SELECT * FROM evento WHERE nombre_evento LIKE ?`;
+  db.query(sql, [operation.nombre_evento], (err, res) => {
+    if (err) {
+      console.log('error: ', err);
+      result(err,null) 
+      // const sql = `SELECT * FROM evento WHERE DATE_FORMAT(fecha_hora, '%Y-%m-%d %H:%i:%s') LIKE '%?%'`;
+      // db.query(sql, [operation.fecha_hora], (err, res) => {
+      //   if (operation.fecha_hora === null) {
+      //     const sql = `SELECT * FROM evento WHERE id_categoria IN  (select id_categoria FROM categoria_evento where descrip_cat LIKE '%?%')`;
+      //     db.query(sql, [operation.id_categoria], (err, res) => {
+      //       if (operation.id_categoria === null) {
+      //         const sql = `SELECT * FROM evento WHERE lugar LIKE '%?%'`;
+      //         db.query(sql, [operation.lugar], (err, res) => {
+      //           if (err) {
+      //             console.log("Sin resultados", err);
+      //             result(err, null)
+      //           }
+      //           else{
+      //             console.log('resultado:', res);
+      //             result(null,res)
+      //           }
+      //         });
+      //       }
+      //       else{
+      //         console.log('resultado:', res);
+      //         result(null,res)
+      //       }
+      //     });
+      //   }
+      //   else{
+      //     console.log('resultado:', res);
+      //     result(null,res)
+      //   }
+      // });
+    } else {
+      if(res[0] > 0)
         result(null, res);
+      else{
+
       }
     }
-  );
+  });
 };
 
 //Peticion cambiar nombre usuario

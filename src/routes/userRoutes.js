@@ -8,7 +8,7 @@ router.get("/usuario/:id", usersController.getById);
 router.get("/principal", usersController.mainPage);
 router.get("/principal/:id", usersController.mainPageById);
 router.get("/evento/id", usersController.showEvent);
-router.get("/busqueda/nombre", usersController.searchEventById);
+router.get("/busqueda/", usersController.searchEventById);
 router.post("/usuario/:id/nombre",usersController.updateNameUser);
 router.post("/usuario/correo",usersController.updateEmailUser);
 router.post("/usuario/contrasenia",usersController.updatePasswordUser);
