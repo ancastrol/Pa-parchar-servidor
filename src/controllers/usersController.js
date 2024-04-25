@@ -1,6 +1,5 @@
 const User = require("../models/user");
 module.exports = {
-
   //Peticion login
   searchLogin(req, res) {
     const user = req.body; //Datos del usuario desde el front-end
@@ -152,7 +151,7 @@ module.exports = {
       });
     });
   },
-  
+
   //Peticion cambiar nombre usuario
   updateNameUser(req, res) {
     const id = req.body;
@@ -176,7 +175,7 @@ module.exports = {
   //Peticion cambiar correo usuario
   updateEmailUser(req, res) {
     console.log("En el controlador");
-    const id = body.id;
+    const id = req.body;
     User.updateEmailUser(id, (err, data) => {
       if (err) {
         return res.status(501).json({
@@ -196,7 +195,7 @@ module.exports = {
   //Peticion cambiar contraseña usuario
   updatePasswordUser(req, res) {
     console.log("En el controlador");
-    const id = body.id;
+    const id = req.body;
     User.updatePasswordUser(id, (err, data) => {
       if (err) {
         return res.status(501).json({
@@ -216,7 +215,7 @@ module.exports = {
   //Peticion cambiar imagen usuario
   updateImageProfileUser(req, res) {
     console.log("En el controlador");
-    const id = body.id;
+    const id = req.body;
     User.updateImageProfileUser(id, (err, data) => {
       if (err) {
         return res.status(501).json({
@@ -233,5 +232,30 @@ module.exports = {
     });
   },
 
+  //Peticion desactivar usuario
+  desactiveProfileUser(req, res) {
+    console.log("En el controlador");
+    const id = req.params.id;
+    User.desactiveProfileUser(id, (err, data) => {
+      if (err) {
+        return res.status(501).json({
+          success: false,
+          message: "'Error al desactivar perfil",
+          error: err,
+        });
+      }
+      if (!data) {
+        return res.status(404).json({
+          success: false,
+          message: 'Usuario no encontrado',
+        });
+      }
+      return res.status(202).json({
+        success: true,
+        message: "Perfil desactivado exitosamente",
+        data: data,
+      });
+    });
+  },
 };
 //LA CHANGA ATORADA EN EL ALAMBRE

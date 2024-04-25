@@ -11,7 +11,8 @@ router.get("/evento/id", usersController.showEvent);
 router.get("/busqueda/nombre", usersController.searchEventById);
 router.post("/usuario/:id/nombre",usersController.updateNameUser);
 router.post("/usuario/correo",usersController.updateEmailUser);
-router.post("/usuario/contraseña",usersController.updatePasswordUser);
+router.post("/usuario/contrasenia",usersController.updatePasswordUser);
 router.post("/usuario/imagenPerfil",usersController.updateImageProfileUser);
+router.delete("/usuario/:id",usersController.desactiveProfileUser);
 
 module.exports = router;
