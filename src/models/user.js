@@ -116,48 +116,135 @@ User.showEvent = (result) => {
   });
 };
 
-//Peticion buscar evento por id
-User.searchEventById = (operation, result) => {
-  console.log("lol");
+//Peticion buscar evento
+User.searchEvent = (operation, result) => {
   const sql = `SELECT * FROM evento WHERE nombre_evento LIKE ?`;
   db.query(sql, [operation.nombre_evento], (err, res) => {
     if (err) {
-      console.log('error: ', err);
-      result(err,null) 
-      // const sql = `SELECT * FROM evento WHERE DATE_FORMAT(fecha_hora, '%Y-%m-%d %H:%i:%s') LIKE '%?%'`;
-      // db.query(sql, [operation.fecha_hora], (err, res) => {
-      //   if (operation.fecha_hora === null) {
-      //     const sql = `SELECT * FROM evento WHERE id_categoria IN  (select id_categoria FROM categoria_evento where descrip_cat LIKE '%?%')`;
-      //     db.query(sql, [operation.id_categoria], (err, res) => {
-      //       if (operation.id_categoria === null) {
-      //         const sql = `SELECT * FROM evento WHERE lugar LIKE '%?%'`;
-      //         db.query(sql, [operation.lugar], (err, res) => {
-      //           if (err) {
-      //             console.log("Sin resultados", err);
-      //             result(err, null)
-      //           }
-      //           else{
-      //             console.log('resultado:', res);
-      //             result(null,res)
-      //           }
-      //         });
-      //       }
-      //       else{
-      //         console.log('resultado:', res);
-      //         result(null,res)
-      //       }
-      //     });
-      //   }
-      //   else{
-      //     console.log('resultado:', res);
-      //     result(null,res)
-      //   }
-      // });
-    } else {
-      if(res[0] > 0)
+      console.log("error: ", err);
+      result(err, null);
+    }
+    else {
+      console.log("Resultados de la primera consulta:", res);
+      if (res.length > 0) {
         result(null, res);
-      else{
+      }
+      else {
+        const sql = `SELECT * FROM evento WHERE DATE_FORMAT(fecha_hora, '%Y-%m-%d %H:%i:%s') LIKE ?`;
+        db.query(sql, [operation.fecha_hora], (err, res) => {
+          if (err) {
+            console.log("error: ", err);
+            result(err, null);
+          } 
+          else {
+            console.log("Resultados de la segunda consulta:", res);
+            if (res.length > 0) {
+              result(null, res);
+            } 
+            else {
+              const sql = `SELECT * FROM evento WHERE id_categoria IN (SELECT id_categoria FROM categoria_evento WHERE descrip_cat LIKE ?)`;
+              db.query(sql, [operation.id_categoria], (err, res) => {
+                if (err) {
+                  console.log("error: ", err);
+                  result(err, null);
+                } 
+                else {
+                  console.log("Resultados de la tercera consulta:", res);
+                  if (res.length > 0) {
+                    result(null, res);
+                  } 
+                  else {
+                    const sql = `SELECT * FROM evento WHERE lugar LIKE ?`;
+                    db.query(sql, [operation.lugar], (err, res) => {
+                      if (err) {
+                        console.log("error: ", err);
+                        result(err, null);
+                      } 
+                      else {
+                        console.log("Resultados de la cuarta consulta:", res);
+                        if (res.length > 0) {
+                          result(null, res);
+                        }
+                        else {
+                          result(null, [], { message: 'No se encontraron coincidencias' });
+                        }
+                      }
+                    });
+                  }
+                }
+              });
+            }
+          }
+        });
+      }
+    }
+  });
+};
 
+//Peticion buscar evento segun id usuario
+User.searchEventByUserId = (operation, result) => {
+  const sql = `SELECT * FROM evento WHERE nombre_evento LIKE ? 
+  AND id_evento in (SELECT id_evento FROM evento_interes WHERE id_estado !=4 AND id_estado != 1 AND id_usuario = ${id})`;
+  db.query(sql, [operation.nombre_evento], (err, res) => { 
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+    }
+    else {
+      console.log("Entre a la que es:", res);
+      if (res.length > 0) {
+        result(null, res);
+      }
+      else {
+        const sql = `SELECT * FROM evento WHERE DATE_FORMAT(fecha_hora, '%Y-%m-%d %H:%i:%s') LIKE ? 
+        AND id_evento in (SELECT id_evento FROM evento_interes WHERE id_estado !=4 AND id_estado != 1 AND id_usuario = ${id})`;
+        db.query(sql, [operation.fecha_hora], (err, res) => {
+          if (err) {
+            console.log("error: ", err);
+            result(err, null);
+          } 
+          else {
+            console.log("Resultados de la segunda consulta:", res);
+            if (res.length > 0) {
+              result(null, res);
+            } 
+            else {
+              const sql = `SELECT * FROM evento WHERE id_categoria IN (SELECT id_categoria FROM categoria_evento WHERE descrip_cat LIKE ?) 
+              AND id_evento in (SELECT id_evento FROM evento_interes WHERE id_estado !=4 AND id_estado != 1 AND id_usuario = ${id})`;
+              db.query(sql, [operation.id_categoria], (err, res) => {
+                if (err) {
+                  console.log("error: ", err);
+                  result(err, null);
+                } 
+                else {
+                  console.log("Resultados de la tercera consulta:", res);
+                  if (res.length > 0) {
+                    result(null, res);
+                  } 
+                  else {
+                    const sql = `SELECT * FROM evento WHERE lugar LIKE ? 
+                    AND id_evento in (SELECT id_evento FROM evento_interes WHERE id_estado !=4 AND id_estado != 1 AND id_usuario = ${id})`;
+                    db.query(sql, [operation.lugar], (err, res) => {
+                      if (err) {
+                        console.log("error: ", err);
+                        result(err, null);
+                      } 
+                      else {
+                        console.log("Resultados de la cuarta consulta:", res);
+                        if (res.length > 0) {
+                          result(null, res);
+                        }
+                        else {
+                          result(null, [], { message: 'No se encontraron coincidencias' });
+                        }
+                      }
+                    });
+                  }
+                }
+              });
+            }
+          }
+        });
       }
     }
   });
@@ -222,5 +309,7 @@ User.desactiveProfileUser = (user, result) => {
     }
   });
 };
+
+//Peticion
 
 module.exports = User;

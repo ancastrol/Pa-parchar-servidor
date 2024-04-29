@@ -97,6 +97,7 @@ module.exports = {
   //Peticion ingresar pagina principal segun id de usuario
   mainPageById(req, res) {
     const id = req.params.id;
+    console.log(req.params.id)
     User.mainPagebyId(id, (err, data) => {
       if (err) {
         return res.status(501).json({
@@ -131,9 +132,8 @@ module.exports = {
     });
   },
 
-  //Peticion buscar evento segun id
-
-  searchEventById(req, res) {
+  //Peticion buscar evento
+  searchEvent(req, res) {
     console.log("En el controlador");
     const nombre_evento = req.query.nombre_evento||null;
     const fecha_hora = req.query.fecha_hora||null;
@@ -141,7 +141,7 @@ module.exports = {
     const lugar = req.query.lugar ||null;
     const operation = {nombre_evento:nombre_evento, fecha_hora:fecha_hora, id_categoria:id_categoria, lugar:lugar};
 
-    User.searchEventById(operation,(err, data) => {
+    User.searchEvent(operation,(err, data) => {
       if (err) {
         return res.status(501).json({
           success: false,
@@ -156,6 +156,34 @@ module.exports = {
       });
     });
   },
+
+  //Peticion buscar evento segun id usuario
+  searchEventByUserId(req, res) {
+    console.log("Hola");
+    const id = req.params.id;
+    console.log(req.params.id)
+    const nombre_evento = req.query.nombre_evento||null;
+    const fecha_hora = req.query.fecha_hora||null;
+    const id_categoria = req.query.id_categoria ||null;
+    const lugar = req.query.lugar ||null;
+    const operation = {nombre_evento:nombre_evento, fecha_hora:fecha_hora, id_categoria:id_categoria, lugar:lugar, id:id};
+
+    User.searchEventByUserId(id, operation,(err, data) => {
+      if (err) {
+        return res.status(501).json({
+          success: false,
+          message: "No se encontraron resultados",
+          error: err,
+        });
+      }
+      return res.status(202).json({
+        success: true,
+        message: "Peticion aceptada",
+        data: data,
+      });
+    });
+  },
+
 
   //Peticion cambiar nombre usuario
   updateNameUser(req, res) {
@@ -263,4 +291,5 @@ module.exports = {
     });
   },
 };
+
 //LA CHANGA ATORADA EN EL ALAMBRE
