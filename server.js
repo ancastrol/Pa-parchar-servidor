@@ -11,7 +11,7 @@ app.use(express.json());
 
 //routes
 app.use(require('./src/routes/userRoutes'));
-
+app.use(require('./src/routes/organizerRoutes'))
 //Inicializar el servidor
 app.listen(3000, () => {
 console.log( `Server is running on port ${app.get('port')}`);

@@ -298,10 +298,10 @@ User.updateImageProfileUser = (user, result) => {
   });
 };
 
-//Peticion desactivar cuenta
-User.desactiveProfileUser = (user, result) => {
-  const sql = `DELETE FROM usuario WHERE id_usuario = ?`;
-  db.query(sql, [user.id_usuario], (err, res) => {
+//Peticion elimiar/desactivar cuenta
+User.desactiveProfileUser = (id, result) => {
+  const sql = `UPDATE usuario set status = 0 WHERE id_usuario = ?`;
+  db.query(sql, [id], (err, res) => {
     if (err) {
       result(err, null);
     } else {
@@ -309,7 +309,5 @@ User.desactiveProfileUser = (user, result) => {
     }
   });
 };
-
-//Peticion
 
 module.exports = User;

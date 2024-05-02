@@ -277,12 +277,6 @@ module.exports = {
           error: err,
         });
       }
-      if (!data) {
-        return res.status(404).json({
-          success: false,
-          message: "Usuario no encontrado",
-        });
-      }
       return res.status(202).json({
         success: true,
         message: "Perfil desactivado exitosamente",
@@ -291,5 +285,4 @@ module.exports = {
     });
   },
 };
-
 //LA CHANGA ATORADA EN EL ALAMBRE
