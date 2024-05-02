@@ -135,21 +135,23 @@ module.exports = {
   //Peticion buscar evento
   searchEvent(req, res) {
     console.log("En el controlador");
-    const nombre_evento = req.query.nombre_evento||null;
-    const fecha_hora = req.query.fecha_hora||null;
-    const id_categoria = req.query.id_categoria ||null;
+    const nombre = req.query.nombre||null;
+    const date = req.query.date||null;
+    const categoria = req.query.categoria ||null;
     const lugar = req.query.lugar ||null;
-    const operation = {nombre_evento:nombre_evento, fecha_hora:fecha_hora, id_categoria:id_categoria, lugar:lugar};
+    //const operation = {nombre_evento:nombre_evento, fecha_hora:fecha_hora, id_categoria:id_categoria, lugar:lugar};
 
-    User.searchEvent(operation,(err, data) => {
+    User.searchEvent(nombre, date , categoria, lugar,(err, data) => {
       if (err) {
-        return res.status(501).json({
+        return res.status(501).json(
+          {
           success: false,
           message: "No se encontraron resultados",
-          error: err,
-        });
+          error: err
+          }
+        );
       }
-      return res.status(202).json({
+      return res.status(201).json({
         success: true,
         message: "Peticion aceptada",
         data: data,
@@ -159,30 +161,58 @@ module.exports = {
 
   //Peticion buscar evento segun id usuario
   searchEventByUserId(req, res) {
-    console.log("Hola");
-    const id = req.params.id;
-    console.log(req.params.id)
-    const nombre_evento = req.query.nombre_evento||null;
-    const fecha_hora = req.query.fecha_hora||null;
-    const id_categoria = req.query.id_categoria ||null;
+    console.log("En el controlador");
+    const id = req.params.id
+    const nombre = req.query.nombre||null;
+    const date = req.query.date||null;
+    const categoria = req.query.categoria ||null;
     const lugar = req.query.lugar ||null;
-    const operation = {nombre_evento:nombre_evento, fecha_hora:fecha_hora, id_categoria:id_categoria, lugar:lugar, id:id};
+    //const operation = {nombre_evento:nombre_evento, fecha_hora:fecha_hora, id_categoria:id_categoria, lugar:lugar};
 
-    User.searchEventByUserId(id, operation,(err, data) => {
+    User.searchEvent(id, nombre, date , categoria, lugar,(err, data) => {
       if (err) {
-        return res.status(501).json({
+        return res.status(501).json(
+          {
           success: false,
           message: "No se encontraron resultados",
-          error: err,
-        });
+          error: err
+          }
+        );
       }
-      return res.status(202).json({
+      return res.status(201).json({
         success: true,
         message: "Peticion aceptada",
         data: data,
       });
     });
   },
+
+
+  // searchEventByUserId(req, res) {
+  //   console.log("Hola");
+  //   const id = req.params.id;
+  //   console.log(req.params.id)
+  //   const nombre_evento = req.query.nombre_evento||null;
+  //   const fecha_hora = req.query.fecha_hora||null;
+  //   const id_categoria = req.query.id_categoria ||null;
+  //   const lugar = req.query.lugar ||null;
+  //  // const operation = {nombre_evento:nombre_evento, fecha_hora:fecha_hora, id_categoria:id_categoria, lugar:lugar, id:id};
+
+  //   User.searchEventByUserId(id, operation,(err, data) => {
+  //     if (err) {
+  //       return res.status(501).json({
+  //         success: false,
+  //         message: "No se encontraron resultados",
+  //         error: err,
+  //       });
+  //     }
+  //     return res.status(202).json({
+  //       success: true,
+  //       message: "Peticion aceptada",
+  //       data: data,
+  //     });
+  //   });
+  // },
 
 
   //Peticion cambiar nombre usuario
