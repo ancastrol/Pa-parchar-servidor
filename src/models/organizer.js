@@ -42,9 +42,8 @@ organizer.eventASC = (id, result) => {
 };
 
 //Peticion elimiar/desactivar evento
-organizer.desactiveEvent = (organizer, result) => {
-  const sql = `DELETE evento SET status = "false" WHERE id_evento = ${id}`;
-  db.query(sql, [id], (err, res) => {
+organizer.desactiveEvent = (id, result) => {
+  db.query(`DELETE FROM evento WHERE id_evento = ${id}`, (err, res) => {
     if (err) {
       result(err, null);
     } else {

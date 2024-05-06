@@ -40,9 +40,9 @@ module.exports = {
   //Peticion desactivar usuario
   desactiveEvent(req, res) {
     console.log("En el controlador");
-    const id = req.query.id || null;
+    const id = req.params.id || null;
 
-    organizer.desactiveEvent(id_evento, (err, data) => {
+    organizer.desactiveEvent(id, (err, data) => {
       if (err) {
         return res.status(501).json({
           success: false,
@@ -53,12 +53,19 @@ module.exports = {
       if (!data) {
         return res.status(404).json({
           success: false,
+          message: "Error en la BD",
+        });
+      }
+      if(data.affectedRows == 0){
+        return res.status(202).json({
+          success: true,
           message: "Evento no encontrado",
+          data: data,
         });
       }
       return res.status(202).json({
         success: true,
-        message: "Evento desactivado exitosamente",
+        message: "Evento eliminado exitosamente",
         data: data,
       });
     });

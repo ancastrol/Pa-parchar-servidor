@@ -7,13 +7,13 @@ router.post("/usuario/login", usersController.searchLogin);
 router.get("/usuario/:id", usersController.getById);
 router.get("/principal", usersController.mainPage);
 router.get("/principal/:id", usersController.mainPageById);
-router.get("/evento/id", usersController.showEvent);
+router.get("/evento/:id", usersController.showEvent);
 router.get("/busqueda", usersController.searchEvent);
+router.get("/buscar", usersController.searchEventByUserId);
 router.post("/usuario/:id/nombre",usersController.updateNameUser);
 router.post("/usuario/correo",usersController.updateEmailUser);
 router.post("/usuario/contrasenia",usersController.updatePasswordUser);
 router.post("/usuario/imagenPerfil",usersController.updateImageProfileUser);
 router.put("/usuario/:id",usersController.desactiveProfileUser);
-router.get("/buscar", usersController.searchEventByUserId);
 
 module.exports = router;
