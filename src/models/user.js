@@ -249,7 +249,11 @@ User.searchEventByUserId = (id, nombre, date, categoria, lugar, result) => {
 //Peticion cambiar nombre usuario
 User.updateNameUser = (user, result) => {
   const sql = `UPDATE usuario SET nombre = ? WHERE id_usuario = ?`;
-  db.query(sql, [user.nombre, user.id_usuario], (err, res) => {
+  db.query(sql, 
+    [
+      user.nombre, 
+      user.id_usuario
+    ], (err, res) => {
     if (err) {
       result(err, null);
     } else {
