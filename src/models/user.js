@@ -220,6 +220,7 @@ User.searchEventByUserId = (id, nombre, date, categoria, lugar, result) => {
     ya = true;
     parametros.push("%" + lugar + "%");
   }
+  
   if (ya) {
     console.log(5)
     sql +=

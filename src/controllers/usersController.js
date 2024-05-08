@@ -97,7 +97,7 @@ module.exports = {
   //Peticion ingresar pagina principal segun id de usuario
   mainPageById(req, res) {
     const id = req.params.id;
-    console.log(req.params.id)
+    console.log(req.params.id);
     User.mainPagebyId(id, (err, data) => {
       if (err) {
         return res.status(501).json({
@@ -135,21 +135,19 @@ module.exports = {
   //Peticion buscar evento
   searchEvent(req, res) {
     console.log("En el controlador...");
-    const nombre = req.query.nombre||null;
-    const date = req.query.date||null;
-    const categoria = req.query.categoria ||null;
-    const lugar = req.query.lugar ||null;
+    const nombre = req.query.nombre || null;
+    const date = req.query.date || null;
+    const categoria = req.query.categoria || null;
+    const lugar = req.query.lugar || null;
     //const operation = {nombre_evento:nombre_evento, fecha_hora:fecha_hora, id_categoria:id_categoria, lugar:lugar};
 
-    User.searchEvent(nombre, date , categoria, lugar,(err, data) => {
+    User.searchEvent(nombre, date, categoria, lugar, (err, data) => {
       if (err) {
-        return res.status(501).json(
-          {
+        return res.status(501).json({
           success: false,
           message: "No se encontraron resultados",
-          error: err
-          }
-        );
+          error: err,
+        });
       }
       return res.status(201).json({
         success: true,
@@ -162,33 +160,32 @@ module.exports = {
   //Peticion buscar evento segun id usuario
   searchEventByUserId(req, res) {
     console.log("En el controlador");
-    const id = req.query.id
-    const nombre = req.query.nombre||false;
-    const date = req.query.date||false;
-    const categoria = req.query.categoria ||false;
-    const lugar = req.query.lugar ||false;
+    const id = req.query.id;
+    const nombre = req.query.nombre || false;
+    const date = req.query.date || false;
+    const categoria = req.query.categoria || false;
+    const lugar = req.query.lugar || false;
     //const operation = {nombre_evento:nombre_evento, fecha_hora:fecha_hora, id_categoria:id_categoria, lugar:lugar};
 
-//console.log(id, nombre, date , categoria, lugar);
+    //console.log(id, nombre, date , categoria, lugar);
 
-    User.searchEventByUserId(id, nombre, date , categoria, lugar,(err, data) => {
-      if (err) {
-        return res.status(501).json(
-          {
-          success: false,
-          message: "No se encontraron resultados",
-          error: err
-          }
-        );
+    User.searchEventByUserId(id,nombre,date,categoria,lugar,
+      (err, data) => {
+        if (err) {
+          return res.status(501).json({
+            success: false,
+            message: "No se encontraron resultados",
+            error: err,
+          });
+        }
+        return res.status(201).json({
+          success: true,
+          message: "Peticion aceptada",
+          data: data,
+        });
       }
-      return res.status(201).json({
-        success: true,
-        message: "Peticion aceptada",
-        data: data,
-      });
-    });
+    );
   },
-
 
   //Peticion cambiar nombre usuario
   updateNameUser(req, res) {

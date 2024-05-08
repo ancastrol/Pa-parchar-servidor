@@ -18,7 +18,7 @@ module.exports = {
       });
     });
   },
-//peticion organizar por fecha ascendente
+  //peticion organizar por fecha ascendente
   fechaASC(req, res) {
     const id = req.params.id;
     console.log(req.params.id);
@@ -116,25 +116,25 @@ module.exports = {
     });
   },
 
-    //Peticion crear evento
-    createEvent(req, res) {
-      const organizer = req.body;
-      console.log("En el controlador ", organizer);
-      Organizer.createEvent(organizer, (err, data) => {
-        if (err) {
-          return res.status(501).json({
-            success: false,
-            message: "Error al crear evento",
-            error: err,
-          });
-        }
-        return res.status(202).json({
-          success: true,
-          message: "Evento creado",
-          data: data,
+  //Peticion crear evento
+  createEvent(req, res) {
+    const organizer = req.body;
+    console.log("En el controlador ", organizer);
+    Organizer.createEvent(organizer, (err, data) => {
+      if (err) {
+        return res.status(501).json({
+          success: false,
+          message: "Error al crear evento",
+          error: err,
         });
+      }
+      return res.status(202).json({
+        success: true,
+        message: "Evento creado",
+        data: data,
       });
-    },
+    });
+  },
 
   //Peticion desactivar usuario
   desactiveEvent(req, res) {
@@ -155,7 +155,7 @@ module.exports = {
           message: "Error en la BD",
         });
       }
-      if(data.affectedRows == 0){
+      if (data.affectedRows == 0) {
         return res.status(202).json({
           success: true,
           message: "Evento no encontrado",

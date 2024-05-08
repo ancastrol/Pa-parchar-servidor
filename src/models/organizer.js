@@ -14,19 +14,7 @@ Organizer.getAll = (result) => {
   });
 };
 
-// Organizer.eventASC = (result) => {
-// const sql = `SELECT nombre_evento, fecha_hora, descripcion, id_categoria, disponibilidad FROM evento WHERE id_usuario = ${id} ORDER BY fecha_hora ASC;`;
-
-// db.query(sql, [], (err, res) => {
-//   if (err) {
-// console.log("error: ", err);
-// result(err, null);
-//   } else {
-// result(null, res);
-//   }
-// });
-//   };
-//Petición organizar por fecha ascendntemente
+//Petición organizar fecha ascendntemente
 Organizer.fechaASC = (id, result) => {
   db.query(
     `SELECT nombre_evento, fecha_hora, descripcion, id_categoria, disponibilidad FROM evento WHERE id_usuario = ${id} ORDER BY fecha_hora ASC;`,
@@ -40,7 +28,7 @@ Organizer.fechaASC = (id, result) => {
     }
   );
 };
-//Petición organizar por fecha descendentemente
+//Petición organizar fecha descendentemente
 Organizer.fechaDESC = (id, result) => {
   db.query(
     `SELECT nombre_evento, fecha_hora, descripcion, id_categoria, disponibilidad FROM evento WHERE id_usuario = ${id} ORDER BY fecha_hora DESC;`,
@@ -54,7 +42,7 @@ Organizer.fechaDESC = (id, result) => {
     }
   );
 };
-//Petición organizar por categoria ascendentemente
+//Petición organizar categoria ascendentemente
 Organizer.categoriaASC = (id, result) => {
   db.query(
     `SELECT nombre_evento, fecha_hora, descripcion, id_categoria, disponibilidad FROM evento WHERE id_usuario = ${id} ORDER BY id_categoria ASC;`,
@@ -69,7 +57,7 @@ Organizer.categoriaASC = (id, result) => {
   );
 };
 
-//Petición organizar por categoria descendente
+//Petición organizar categoria descendente
 Organizer.categoriaDESC = (id, result) => {
   db.query(
     `SELECT nombre_evento, fecha_hora, descripcion, id_categoria, disponibilidad FROM evento WHERE id_usuario = ${id} ORDER BY id_categoria DESC;`,
@@ -84,7 +72,7 @@ Organizer.categoriaDESC = (id, result) => {
   );
 };
 
-// //Cambiar datos evento
+//Peticion cambiar datos evento
 Organizer.updateEvent = (organizer,  result) => {
   const sql= `UPDATE evento SET nombre_evento = ?, descripcion = ?, fecha_hora = ?, lugar = ?, direccion = ?, id_categoria = ?, disponibilidad = ?, ruta_imagen = ?, link_compra = ? WHERE id_evento = ?`;
 
@@ -115,6 +103,7 @@ Organizer.updateEvent = (organizer,  result) => {
   )
 };
 
+//Peticion crear evento
 Organizer.createEvent = (organizer,  result) => {
   const sql= `INSERT INTO evento (nombre_evento, descripcion, fecha_hora, lugar, direccion, id_categoria, disponibilidad, ruta_imagen, link_compra, id_usuario) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
 
@@ -157,3 +146,16 @@ Organizer.desactiveEvent = (id, result) => {
 };
 
 module.exports = Organizer;
+
+// Organizer.eventASC = (result) => {
+// const sql = `SELECT nombre_evento, fecha_hora, descripcion, id_categoria, disponibilidad FROM evento WHERE id_usuario = ${id} ORDER BY fecha_hora ASC;`;
+
+// db.query(sql, [], (err, res) => {
+//   if (err) {
+// console.log("error: ", err);
+// result(err, null);
+//   } else {
+// result(null, res);
+//   }
+// });
+//   };
