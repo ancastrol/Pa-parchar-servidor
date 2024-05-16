@@ -75,7 +75,7 @@ User.getById = (id, result) => {
 
 //peticion para ingresar pagina principal
 User.mainPage = (result) => {
-  const sql = `SELECT ruta_imagen, LEFT(nombre_evento,10), LEFT(descripcion, 25), LEFT(fecha_hora, 10) FROM evento where id_evento in (SELECT id_evento FROM evento_interes WHERE id_estado !=4 AND id_estado != 1 )`;
+  const sql = `SELECT ruta_imagen, LEFT(nombre_evento,10), LEFT(descripcion, 25), LEFT(fecha_hora, 10) FROM evento`;
 
   db.query(sql, [], (err, res) => {
     if (err) {

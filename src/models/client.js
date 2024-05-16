@@ -1,7 +1,6 @@
 const db = require("../config/config");
 const Client = {};
 
-// Client.calendarState = (id, date1, date2, result) => {
 //   let sql = `SELECT nombre_evento, DATE(fecha_hora) fecha, lugar FROM evento WHERE `;
 //   let parametros = [];
 //   let ya = false;
@@ -99,3 +98,5 @@ Client.calendarState = (id, date1, date2, result) => {
 }
 
 module.exports = Client;
+
+// Client.calendarState = (id, date1, date2, result) => {
