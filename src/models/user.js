@@ -49,7 +49,7 @@ User.searchLogin = (user, result) => {
 
 //Peticion obtener usuarios
 User.getAll = (result) => {
-  const sql = `SELECT * FROM usuarios`;
+  const sql = `SELECT * FROM usuario`;
 
   db.query(sql, [], (err, res) => {
     if (err) {
