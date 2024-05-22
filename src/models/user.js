@@ -75,7 +75,7 @@ User.getById = (id, result) => {
 
 //peticion para ingresar pagina principal
 User.mainPage = (result) => {
-  const sql = `SELECT ruta_imagen, LEFT(nombre_evento,10), LEFT(descripcion, 25), LEFT(fecha_hora, 10) FROM evento`;
+  const sql = `SELECT ruta_imagen, LEFT(nombre_evento,10) as nombre_evento, LEFT(descripcion, 25) as descripcion, LEFT(fecha_hora, 10) as fecha_hora FROM evento`;
 
   db.query(sql, [], (err, res) => {
     if (err) {
