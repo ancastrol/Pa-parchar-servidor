@@ -6,6 +6,7 @@ router.get("/usuario", usersController.getAll);
 router.post("/usuario/login", usersController.searchLogin);
 router.get("/usuario/:id", usersController.getById);
 router.get("/principal", usersController.mainPage);
+router.get("/principal/events", usersController.moreEventsPage);
 router.get("/principal/:id", usersController.mainPageById);
 router.get("/evento/:id", usersController.showEvent);
 router.get("/busqueda", usersController.searchEvent);

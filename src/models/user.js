@@ -75,7 +75,22 @@ User.getById = (id, result) => {
 
 //peticion para ingresar pagina principal
 User.mainPage = (result) => {
-  const sql = `SELECT ruta_imagen, LEFT(nombre_evento,10) as nombre_evento, LEFT(descripcion, 25) as descripcion, LEFT(fecha_hora, 10) as fecha_hora FROM evento`;
+  const sql = `SELECT ruta_imagen, LEFT(nombre_evento, 10) AS nombre_evento, LEFT(descripcion, 25) AS descripcion, LEFT(fecha_hora, 10) AS fecha_hora 
+  FROM evento WHERE fecha_hora > curdate() ORDER BY fecha_hora asc LIMIT 10 OFFSET 3;`;
+
+  db.query(sql, [], (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+    } else {
+      result(null, res);
+    }
+  });
+};
+
+User.moreEventsPage = (result) => {
+  const sql = `SELECT ruta_imagen, LEFT(nombre_evento,10) as nombre_evento, LEFT(descripcion, 25) as descripcion, LEFT(fecha_hora, 10) as fecha_hora FROM evento WHERE fecha_hora > curdate() 
+  ORDER BY fecha_hora ASC LIMIT 100`;
 
   db.query(sql, [], (err, res) => {
     if (err) {

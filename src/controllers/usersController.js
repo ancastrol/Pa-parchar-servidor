@@ -94,6 +94,23 @@ module.exports = {
     });
   },
 
+  moreEventsPage(req, res) {
+    User.moreEventsPage((err, data) => {
+      if (err) {
+        return res.status(501).json({
+          success: false,
+          message: "Error al ingresar a la pagina",
+          error: err,
+        });
+      }
+      return res.status(202).json({
+        success: true,
+        message: "Peticion aceptada",
+        data: data,
+      });
+    });
+  },
+
   //Peticion ingresar pagina principal segun id de usuario
   mainPageById(req, res) {
     const id = req.params.id;
