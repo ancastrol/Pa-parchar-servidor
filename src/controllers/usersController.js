@@ -94,6 +94,26 @@ module.exports = {
     });
   },
 
+  //Peticion ver eventos en carrousel
+  eventsCarrousel(req, res) {
+    User.eventsCarrousel((err, data) => {
+      if (err) {
+        return res.status(501).json({
+          success: false,
+          message: "Eventos no encontrados",
+          error: err,
+        });
+      }
+      return res.status(202).json({
+        success: true,
+        message: "Peticion aceptada",
+        data: data,
+      });
+    });
+  },
+
+
+  //Peticion ver todos los eventos
   moreEventsPage(req, res) {
     User.moreEventsPage((err, data) => {
       if (err) {
