@@ -9,7 +9,7 @@ router.get("/principal", usersController.mainPage);
 router.get("/principal/eventsCarrousel", usersController.eventsCarrousel);
 router.get("/principal/events", usersController.moreEventsPage);
 router.get("/principal/:id", usersController.mainPageById);
-router.get("/evento/:id", usersController.showEvent);
+router.get("/evento/id", usersController.showEvent);
 router.get("/busqueda", usersController.searchEvent);
 router.get("/buscar", usersController.searchEventByUserId);
 router.post("/usuario/:id/nombre",usersController.updateNameUser);

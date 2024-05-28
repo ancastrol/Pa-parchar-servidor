@@ -133,7 +133,7 @@ User.mainPagebyId = (id, result) => {
 
 //Peticion ver detalles de evento
 User.showEvent = (result) => {
-  const sql = `SELECT nombre_evento, descripcion, LEFT(fecha_hora, 10) AS fecha, right(fecha_hora, 8) AS hora, lugar, ruta_imagen FROM evento where id = ?`;
+  const sql = `SELECT nombre_evento, descripcion, LEFT(fecha_hora, 10) AS fecha, right(fecha_hora, 8) AS hora, lugar, ruta_imagen AS ruta_imagen FROM evento where id = ?`;
 
   db.query(sql, [], (err, res) => {
     if (err) {
