@@ -153,7 +153,8 @@ module.exports = {
 
   //Peticion ver detalles de evento
   showEvent(req, res) {
-    User.showEvent((err, data) => {
+    const id = req.params.id;
+    User.showEvent(id, (err, data) => {
       if (err) {
         return res.status(501).json({
           success: false,
