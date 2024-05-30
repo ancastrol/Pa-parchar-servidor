@@ -131,6 +131,25 @@ module.exports = {
     });
   },
 
+  //Peticion ingresar al carrusel segun id de usuario
+  eventsCarrouselId(req, res) {
+    const id = req.params.id;
+    User.eventsCarrouselId(id, (err, data) => {
+      if (err) {
+        return res.status(501).json({
+          success: false,
+          message: "Error al encontrar eventos carrusel",
+          error: err,
+        });
+      }
+      return res.status(202).json({
+        success: true,
+        message: "Peticion aceptada",
+        data: data,
+      });
+    });
+  },
+
   //Peticion ingresar pagina principal segun id de usuario
   mainPageById(req, res) {
     const id = req.params.id;
@@ -139,7 +158,7 @@ module.exports = {
       if (err) {
         return res.status(501).json({
           success: false,
-          message: "Error al ingresar a la pagina",
+          message: "Error al encontrar eventos",
           error: err,
         });
       }

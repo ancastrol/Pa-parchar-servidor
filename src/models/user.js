@@ -33,10 +33,10 @@ User.register = (user, result) => {
 
 //Peticion Login
 User.searchLogin = (user, result) => {
-  const sql = `SELECT correo AS tipo FROM usuario WHERE correo = ? AND contrasenia = ?`;
+  const sql = `SELECT * FROM usuario WHERE correo = ? AND contrasenia = ?`;
   db.query(
     sql,
-    [user.email, user.password, user.email, user.password],
+    [user.correo, user.contrasenia],
     (err, res) => {
       if (err) {
         result(err, null);
@@ -73,6 +73,20 @@ User.getById = (id, result) => {
   });
 };
 
+//Peticion para ingresar eventos al carrousel
+User.eventsCarrousel = (result) => {
+  const sql = `SELECT id_evento, nombre_evento, descripcion, left(fecha_hora, 19) AS fecha_hora, ruta_imagen FROM evento WHERE fecha_hora > curdate() ORDER by fecha_hora ASC LIMIT 3`;
+
+  db.query(sql, [], (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+    } else {
+      result(null, res);
+    }
+  });
+};
+
 //peticion para ingresar pagina principal
 User.mainPage = (result) => {
   const sql = `SELECT id_evento, ruta_imagen, nombre_evento, CONCAT(LEFT(descripcion, 60), '...') AS descripcion, LEFT(fecha_hora, 10) AS fecha_hora 
@@ -88,22 +102,8 @@ User.mainPage = (result) => {
   });
 };
 
-//Peticion para ingresar eventos al carrousel
-User.eventsCarrousel = (result) => {
-  const sql = `SELECT nombre_evento, descripcion, left(fecha_hora, 19) AS fecha_hora, ruta_imagen FROM evento WHERE fecha_hora > curdate() ORDER by fecha_hora ASC LIMIT 3`;
-
-  db.query(sql, [], (err, res) => {
-    if (err) {
-      console.log("error: ", err);
-      result(err, null);
-    } else {
-      result(null, res);
-    }
-  });
-};
-
 User.moreEventsPage = (result) => {
-  const sql = `SELECT ruta_imagen, nombre_evento, CONCAT(LEFT(descripcion, 60), '...') AS descripcion, LEFT(fecha_hora, 10) as fecha_hora FROM evento WHERE fecha_hora > curdate() 
+  const sql = `SELECT id_evento, ruta_imagen, nombre_evento, CONCAT(LEFT(descripcion, 60), '...') AS descripcion, LEFT(fecha_hora, 10) as fecha_hora FROM evento WHERE fecha_hora > curdate() 
   ORDER BY fecha_hora ASC LIMIT 100`;
 
   db.query(sql, [], (err, res) => {
@@ -116,11 +116,42 @@ User.moreEventsPage = (result) => {
   });
 };
 
+
+//Peticion para ingresar eventos al carrousel segun id usuario
+User.eventsCarrousel = (id, result) => {
+  const sql = `SELECT ruta_imagen, LEFT(nombre_evento,10) as nombre_evento, LEFT(descripcion, 25) as descripcion, LEFT(fecha_hora, 10) as fecha_hora FROM evento where fecha_hora > curdate() 
+  AND id_evento in (SELECT id_evento FROM evento_interes WHERE id_estado !=4 AND id_estado != 1 AND id_usuario = ?) ORDER by fecha_hora ASC LIMIT 3`;
+
+  db.query(sql, [id], (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+    } else {
+      result(null, res);
+    }
+  });
+};
+
+//Peticion para ingresar pagina principal segun su id de usuario
+User.eventsCarrouselId = (id, result) => {
+  const sql = `SELECT ruta_imagen, nombre_evento, LEFT(descripcion, 25) as descripcion, LEFT(fecha_hora, 10) as fecha_hora FROM evento where fecha_hora > curdate() 
+  AND id_evento in (SELECT id_evento FROM evento_interes WHERE id_estado !=4 AND id_estado != 1 AND id_usuario = ?) ORDER by fecha_hora ASC LIMIT 3`;
+
+  db.query(sql, [id], (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+    } else {
+      result(null, res);
+    }
+  });
+};
+
 //Peticion para ingresar pagina principal segun su id de usuario
 User.mainPagebyId = (id, result) => {
-  db.query(
-    `SELECT ruta_imagen, LEFT(nombre_evento,10), LEFT(descripcion, 25), LEFT(fecha_hora, 10) FROM evento where id_evento in (SELECT id_evento FROM evento_interes WHERE id_estado !=4 AND id_estado != 1 AND id_usuario = ${id})`,
-    (err, res) => {
+  const sql= `SELECT ruta_imagen, nombre_evento, LEFT(descripcion, 25) AS descripcion, LEFT(fecha_hora, 10) AS fecha_hora FROM evento where id_evento in (SELECT id_evento FROM evento_interes WHERE id_estado !=4 AND id_estado != 1 AND id_usuario = ?) AND fecha_hora > curdate() 
+  ORDER BY fecha_hora ASC LIMIT 100 OFFSET 3`
+  db.query(sql, [id], (err, res) => {
       if (err) {
         console.log("error: ", err);
         result(err, null);
