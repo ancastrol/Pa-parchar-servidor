@@ -102,6 +102,8 @@ User.mainPage = (result) => {
   });
 };
 
+// Mostrar eventos en ver mas eventos, para una maximo de 100 eventos
+
 User.moreEventsPage = (result) => {
   const sql = `SELECT id_evento, ruta_imagen, nombre_evento, CONCAT(LEFT(descripcion, 60), '...') AS descripcion, LEFT(fecha_hora, 10) as fecha_hora FROM evento WHERE fecha_hora > curdate() 
   ORDER BY fecha_hora ASC LIMIT 100`;
@@ -116,25 +118,9 @@ User.moreEventsPage = (result) => {
   });
 };
 
-
-//Peticion para ingresar eventos al carrousel segun id usuario
-User.eventsCarrousel = (id, result) => {
-  const sql = `SELECT ruta_imagen, LEFT(nombre_evento,10) as nombre_evento, LEFT(descripcion, 25) as descripcion, LEFT(fecha_hora, 10) as fecha_hora FROM evento where fecha_hora > curdate() 
-  AND id_evento in (SELECT id_evento FROM evento_interes WHERE id_estado !=4 AND id_estado != 1 AND id_usuario = ?) ORDER by fecha_hora ASC LIMIT 3`;
-
-  db.query(sql, [id], (err, res) => {
-    if (err) {
-      console.log("error: ", err);
-      result(err, null);
-    } else {
-      result(null, res);
-    }
-  });
-};
-
 //Peticion para ingresar pagina principal segun su id de usuario
 User.eventsCarrouselId = (id, result) => {
-  const sql = `SELECT ruta_imagen, nombre_evento, LEFT(descripcion, 25) as descripcion, LEFT(fecha_hora, 10) as fecha_hora FROM evento where fecha_hora > curdate() 
+  const sql = `SELECT id_evento, ruta_imagen, nombre_evento, LEFT(descripcion, 25) as descripcion, LEFT(fecha_hora, 10) as fecha_hora FROM evento where fecha_hora > curdate() 
   AND id_evento in (SELECT id_evento FROM evento_interes WHERE id_estado !=4 AND id_estado != 1 AND id_usuario = ?) ORDER by fecha_hora ASC LIMIT 3`;
 
   db.query(sql, [id], (err, res) => {
@@ -149,7 +135,7 @@ User.eventsCarrouselId = (id, result) => {
 
 //Peticion para ingresar pagina principal segun su id de usuario
 User.mainPagebyId = (id, result) => {
-  const sql= `SELECT ruta_imagen, nombre_evento, LEFT(descripcion, 25) AS descripcion, LEFT(fecha_hora, 10) AS fecha_hora FROM evento where id_evento in (SELECT id_evento FROM evento_interes WHERE id_estado !=4 AND id_estado != 1 AND id_usuario = ?) AND fecha_hora > curdate() 
+  const sql= `SELECT id_evento, ruta_imagen, nombre_evento, LEFT(descripcion, 25) AS descripcion, LEFT(fecha_hora, 10) AS fecha_hora FROM evento where id_evento in (SELECT id_evento FROM evento_interes WHERE id_estado !=4 AND id_estado != 1 AND id_usuario = ?) AND fecha_hora > curdate() 
   ORDER BY fecha_hora ASC LIMIT 100 OFFSET 3`
   db.query(sql, [id], (err, res) => {
       if (err) {
@@ -164,7 +150,7 @@ User.mainPagebyId = (id, result) => {
 
 //Peticion ver detalles de evento
 User.showEvent = (id_evento, result) => {
-  const sql = `SELECT nombre_evento, descripcion, LEFT(fecha_hora, 10) AS fecha, right(fecha_hora, 8) AS hora, lugar, ruta_imagen AS ruta_imagen FROM evento where id_evento = ?`;
+  const sql = `SELECT ruta_flayer AS flayer, nombre_evento, descripcion, LEFT(fecha_hora, 10) AS fecha, right(fecha_hora, 8) AS hora, lugar FROM evento where id_evento = ?`;
 
   db.query(sql, [id_evento], (err, res) => {
     if (err) {
