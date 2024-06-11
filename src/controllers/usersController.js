@@ -76,6 +76,24 @@ module.exports = {
     });
   },
 
+  getProfile(req, res){
+    const id = req.params.id;
+    User.getProfile(id, (err, data) => {
+      if (err) {
+        return res.status(501).json({
+          success: false,
+          message: "Error al obtener el perfil",
+          error: err,
+        });
+      }
+      return res.status(202).json({
+        success: true,
+        message: "Perfil encontrado",
+        data: data,
+      });
+    });
+  },
+
   //Peticion para ingresar pagina principal
   mainPage(req, res) {
     User.mainPage((err, data) => {

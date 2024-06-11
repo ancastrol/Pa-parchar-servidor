@@ -76,9 +76,21 @@ User.getById = (id, result) => {
   });
 };
 
+
+User.getProfile = (id, result) => {
+  db.query(`SELECT * FROM usuario WHERE id_usuario = ${id}`, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+    } else {
+      result(null, res);
+    }
+  });
+};
+
 //Peticion para ingresar eventos al carrousel
 User.eventsCarrousel = (result) => {
-  const sql = `SELECT id_evento, nombre_evento, descripcion, left(fecha_hora, 19) AS fecha_hora, ruta_imagen FROM evento WHERE fecha_hora > curdate() ORDER by fecha_hora ASC LIMIT 3`;
+  const sql = `SELECT id_evento, nombre_evento, left(descripcion,800) as descripcion, left(fecha_hora, 19) AS fecha_hora, ruta_imagen FROM evento WHERE fecha_hora > curdate() ORDER by fecha_hora ASC LIMIT 3`;
 
   db.query(sql, [], (err, res) => {
     if (err) {
