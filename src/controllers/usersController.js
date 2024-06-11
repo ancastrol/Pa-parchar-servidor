@@ -33,7 +33,7 @@ module.exports = {
       }
       return res.status(201).json({
         success: true,
-        message: "Creado el usuario",
+        message:  data.message,
         data: data, //Id del usuario creado
       });
     });

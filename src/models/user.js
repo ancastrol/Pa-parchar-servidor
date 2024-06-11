@@ -7,15 +7,18 @@ User.register = (user, result) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
-    } else {
-      console.log("Datos existentes: ", err);
+    } 
+    else {
+      console.log("res: ", res[0]);
       if (res[0].datos_existentes > 0) {
         result(null, { message: "Correo ya registrado" });
-      } else {
-        const sql = `INSERT INTO usuario (nombre, rol, correo, contrasenia) VALUES (?, ?, ?, ?)`;
+        console.log("si esta entrando");
+      } 
+      else {
+        const sql = `INSERT INTO usuario (nombre, correo, contrasenia) VALUES (?, ?, ?)`;
         db.query(
           sql,
-          [user.nombre, user.rol, user.correo, user.contrasenia],
+          [user.nombre, user.correo, user.contrasenia],
           (err, res) => {
             if (err) {
               console.log("err: ", err);
