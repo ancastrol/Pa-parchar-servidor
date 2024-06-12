@@ -18,6 +18,26 @@ module.exports = {
       });
     });
   },
+
+  getMyEvents(req, res) {
+    const id = req.params.id;
+    console.log(req.params.id);
+    Organizer.getMyEvents(id, (err, data) => {
+      if (err) {
+        res.status(501).json({
+          success: false,
+          message: "Error al obtener los eventos",
+          error: err,
+        });
+      }
+      return res.status(200).json({
+        success: true,
+        message: "Eventos obtenidos",
+        data: data,
+      });
+    });
+  },
+
   //peticion organizar por fecha ascendente
   fechaASC(req, res) {
     const id = req.params.id;

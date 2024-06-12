@@ -14,10 +14,28 @@ Organizer.getAll = (result) => {
   });
 };
 
+//traer mis eventos por id usuario
+Organizer.getMyEvents = (id, result) => {
+  const sql = `SELECT e.id_evento, e.nombre_evento, e.ruta_imagen, LEFT(e.fecha_hora,10) as fecha, RIGHT(e.fecha_hora, 8) as hora, e.disponibilidad, e.descripcion, o.descrip_cat
+FROM evento e JOIN categoria_evento o ON e.id_categoria = o.id_categoria where id_usuario = ${id};`;
+
+  db.query(sql, [id], (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+    } else {
+      result(null, res);
+      console.log(res);
+    }
+  }
+  );
+}
+
 //Petición organizar fecha ascendntemente
 Organizer.fechaASC = (id, result) => {
   db.query(
-    `SELECT nombre_evento, fecha_hora, descripcion, id_categoria, disponibilidad FROM evento WHERE id_usuario = ${id} ORDER BY fecha_hora ASC;`,
+    `SELECT e.id_evento, e.nombre_evento, LEFT(e.fecha_hora,10) as fecha, RIGHT(e.fecha_hora, 8) as hora, e.disponibilidad, e.descripcion, o.descrip_cat
+FROM evento e JOIN categoria_evento o ON e.id_categoria = o.id_categoria where id_usuario = ${id} ORDER BY fecha_hora ASC;`,[id],
     (err, res) => {
       if (err) {
         console.log("error: ", err);
@@ -31,7 +49,8 @@ Organizer.fechaASC = (id, result) => {
 //Petición organizar fecha descendentemente
 Organizer.fechaDESC = (id, result) => {
   db.query(
-    `SELECT nombre_evento, fecha_hora, descripcion, id_categoria, disponibilidad FROM evento WHERE id_usuario = ${id} ORDER BY fecha_hora DESC;`,
+    `SELECT e.id_evento, e.nombre_evento, LEFT(e.fecha_hora,10) as fecha, RIGHT(e.fecha_hora, 8) as hora, e.disponibilidad, e.descripcion, o.descrip_cat
+FROM evento e JOIN categoria_evento o ON e.id_categoria = o.id_categoria where id_usuario = ${id} ORDER BY fecha_hora DESC;`,
     (err, res) => {
       if (err) {
         console.log("error: ", err);
@@ -45,7 +64,8 @@ Organizer.fechaDESC = (id, result) => {
 //Petición organizar categoria ascendentemente
 Organizer.categoriaASC = (id, result) => {
   db.query(
-    `SELECT nombre_evento, fecha_hora, descripcion, id_categoria, disponibilidad FROM evento WHERE id_usuario = ${id} ORDER BY id_categoria ASC;`,
+    `SELECT e.id_evento, e.nombre_evento, LEFT(e.fecha_hora,10) as fecha, RIGHT(e.fecha_hora, 8) as hora, e.disponibilidad, e.descripcion, o.descrip_cat
+FROM evento e JOIN categoria_evento o ON e.id_categoria = o.id_categoria where id_usuario = ${id} ORDER BY e.id_categoria ASC;`,
     (err, res) => {
       if (err) {
         console.log("error: ", err);
@@ -60,7 +80,8 @@ Organizer.categoriaASC = (id, result) => {
 //Petición organizar categoria descendente
 Organizer.categoriaDESC = (id, result) => {
   db.query(
-    `SELECT nombre_evento, fecha_hora, descripcion, id_categoria, disponibilidad FROM evento WHERE id_usuario = ${id} ORDER BY id_categoria DESC;`,
+    `SELECT e.id_evento, e.nombre_evento, LEFT(e.fecha_hora,10) as fecha, RIGHT(e.fecha_hora, 8) as hora, e.disponibilidad, e.descripcion, o.descrip_cat
+FROM evento e JOIN categoria_evento o ON e.id_categoria = o.id_categoria where id_usuario = ${id} ORDER BY e.id_categoria DESC;`,
     (err, res) => {
       if (err) {
         console.log("error: ", err);

@@ -2,6 +2,7 @@ const { Router } = require("express");
 const router = Router(); //routes
 const usersController = require("../controllers/organizerController");
 
+router.get("/organizer/:id", usersController.getMyEvents);//prueba
 router.get("/organizer", usersController.getAll);//prueba 
 router.get('/organizer/:id/fechaASC',usersController.fechaASC);
 router.get('/organizer/:id/fechaDESC',usersController.fechaDESC);
