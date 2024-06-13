@@ -209,7 +209,7 @@ module.exports = {
 
   //Peticion buscar evento
   searchEvent(req, res) {
-    const busqueda = req.body.searchTerm;
+    const busqueda = req.body.searchElement;
     User.searchEvent(busqueda, (err, data) => {
       if (err) {
         return res.status(501).json({
