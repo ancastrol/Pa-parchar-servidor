@@ -12,7 +12,7 @@ router.get("/principal/events", usersController.moreEventsPage);
 router.get("/principal/:id", usersController.mainPageById);
 router.get("/principal/eventsCarrousel/:id", usersController.eventsCarrouselId);
 router.get("/evento/:id", usersController.showEvent);
-router.get("/busqueda", usersController.searchEvent);
+router.post("/busqueda", usersController.searchEvent); 
 router.get("/buscar", usersController.searchEventByUserId);
 router.post("/usuario/:id/nombre",usersController.updateNameUser);
 router.post("/usuario/correo",usersController.updateEmailUser);

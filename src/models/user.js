@@ -177,64 +177,79 @@ User.showEvent = (id_evento, result) => {
   });
 };
 
-//Peticion buscar evento
-User.searchEvent = (nombre, date, categoria, lugar, result) => {
-  // console.log(nombre_evento + '--' + fecha_hora + '--' + id_categoria + '--' + lugar + '--')
-  let sql = `SELECT * FROM evento WHERE `;
-  let ya = false;
-  let parametros = [];
+//Peticion buscar evento, se comenta para probar una busqueda que implemente todos los parametros
+// User.searchEvent = (nombre, date, categoria, lugar, result) => {
+//   // console.log(nombre_evento + '--' + fecha_hora + '--' + id_categoria + '--' + lugar + '--')
+//   let sql = `SELECT * FROM evento WHERE `;
+//   let ya = false;
+//   let parametros = [];
 
-  if (nombre) {
-    sql = sql + "nombre_evento LIKE ?";
-    ya = true;
-    parametros.push("%" + nombre + "%");
-  }
+//   if (nombre) {
+//     sql = sql + "nombre_evento LIKE ?";
+//     ya = true;
+//     parametros.push("%" + nombre + "%");
+//   }
 
-  if (date) {
-    if (ya) {
-      sql += " OR ";
-    }
-    sql = sql + "fecha_hora LIKE ?";
-    ya = true;
-    parametros.push("%" + date + "%");
-  }
+//   if (date) {
+//     if (ya) {
+//       sql += " OR ";
+//     }
+//     sql = sql + "fecha_hora LIKE ?";
+//     ya = true;
+//     parametros.push("%" + date + "%");
+//   }
 
-  if (categoria) {
-    if (ya) {
-      sql += " OR ";
-    }
-    sql =
-      sql +
-      "id_categoria IN (select id_categoria FROM categoria_evento where descrip_cat LIKE ?)";
-    ya = true;
-    parametros.push(categoria);
-  }
+//   if (categoria) {
+//     if (ya) {
+//       sql += " OR ";
+//     }
+//     sql =
+//       sql +
+//       "id_categoria IN (select id_categoria FROM categoria_evento where descrip_cat LIKE ?)";
+//     ya = true;
+//     parametros.push(categoria);
+//   }
 
-  if (lugar) {
-    if (ya) {
-      sql += " OR ";
-    }
-    sql = sql + "lugar LIKE ?";
-    ya = true;
-    parametros.push("%" + lugar + "%");
-  }
+//   if (lugar) {
+//     if (ya) {
+//       sql += " OR ";
+//     }
+//     sql = sql + "lugar LIKE ?";
+//     ya = true;
+//     parametros.push("%" + lugar + "%");
+//   }
 
-  if (!ya) {
-    sql = `SELECT * FROM evento`;
-  }
+//   if (!ya) {
+//     sql = `SELECT * FROM evento`;
+//   }
 
-  console.log ("sql: "+ sql);
-  console.log (parametros);
+//   console.log ("sql: "+ sql);
+//   console.log (parametros);
   
-  db.query(sql, parametros, (err, res) => {
+//   db.query(sql, parametros, (err, res) => {
 
+//     if (err) {
+//       result(err, null);
+//     } else {
+//       result(null, res);
+//     }
+//   });
+// };
+
+//Buscar evento revisando todos los parametros de la tabla
+User.searchEvent = (busqueda, result) => {
+  const sql = `SELECT e.id_evento, e.nombre_evento, e.lugar, e.ruta_imagen, LEFT(e.fecha_hora,10) as fecha, RIGHT(e.fecha_hora, 8) as hora, e.disponibilidad, o.descrip_cat, e.descripcion 
+  FROM evento e JOIN categoria_evento o ON e.id_categoria = o.id_categoria where CONCAT(e.nombre_evento, ' ', e.lugar, ' ',e.fecha_hora, ' ', e.direccion, ' ', e.disponibilidad, o.descrip_cat) LIKE ?;`;
+  db.query(sql, [busqueda], (err, res) => {
     if (err) {
+      console.log("error: ", err);
       result(err, null);
     } else {
       result(null, res);
     }
   });
-};
+}
+
 
 //Peticion buscar evento segun id usuario
 User.searchEventByUserId = (id, nombre, date, categoria, lugar, result) => {

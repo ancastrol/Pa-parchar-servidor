@@ -209,14 +209,8 @@ module.exports = {
 
   //Peticion buscar evento
   searchEvent(req, res) {
-    console.log("En el controlador...");
-    const nombre = req.query.nombre || null;
-    const date = req.query.date || null;
-    const categoria = req.query.categoria || null;
-    const lugar = req.query.lugar || null;
-    //const operation = {nombre_evento:nombre_evento, fecha_hora:fecha_hora, id_categoria:id_categoria, lugar:lugar};
-
-    User.searchEvent(nombre, date, categoria, lugar, (err, data) => {
+    const busqueda = req.body.searchTerm;
+    User.searchEvent(busqueda, (err, data) => {
       if (err) {
         return res.status(501).json({
           success: false,
