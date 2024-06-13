@@ -57,6 +57,7 @@ module.exports = {
       });
     });
   },
+
   //peticion organizar por fecha descendente
   fechaDESC(req, res) {
     const id = req.params.id;
@@ -76,6 +77,7 @@ module.exports = {
       });
     });
   },
+  
   //peticion organizar por categoria ascendente
   categoriaASC(req, res) {
     const id = req.params.id;
