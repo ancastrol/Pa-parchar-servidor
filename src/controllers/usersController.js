@@ -226,6 +226,27 @@ module.exports = {
     });
   },
 
+  //Peticion cambiar estado de evento
+  eventStatus(req, res) {
+    const id_usuario = req.body.id_usuario;
+    const id_evento = req.body.id_evento;
+    const id_estado = req.body.estado;
+    User.eventStatus(id_usuario, id_evento, id_estado, (err, data) => {
+      if (err) {
+        return res.status(501).json({
+          success: false,
+          message: "Error al cambiar estado de evento",
+          error: err,
+        });
+      }
+      return res.status(202).json({
+        success: true,
+        message: "Peticion aceptada",
+        data: data,
+      });
+    });
+  },
+
   //Peticion buscar evento segun id usuario
   searchEventByUserId(req, res) {
     console.log("En el controlador");

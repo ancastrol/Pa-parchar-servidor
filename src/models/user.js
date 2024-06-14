@@ -250,6 +250,18 @@ User.searchEvent = (busqueda, result) => {
   });
 }
 
+//Peticion cambiar estado de evento
+User.eventStatus = (id_usuario, id_evento, id_estado, result) => {
+  const sql = `INSERT INTO evento_interes (id_usuario, id_evento, id_estado) VALUES (?, ?, ?)`;
+  db.query(sql, [id_usuario, id_evento, id_estado], (err, res) => {
+    if (err) {
+      result(err, null);
+    } else {
+      result(null, res);
+    }
+  });
+};
+
 
 //Peticion buscar evento segun id usuario
 User.searchEventByUserId = (id, nombre, date, categoria, lugar, result) => {
