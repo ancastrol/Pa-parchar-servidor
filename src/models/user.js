@@ -9,7 +9,6 @@ User.register = (user, result) => {
       result(err, null);
     } 
     else {
-      console.log("res: ", res[0]);
       if (res[0].datos_existentes > 0) {
         result(null, { message: "Correo ya registrado" });
         console.log("si esta entrando");
@@ -165,7 +164,7 @@ User.mainPagebyId = (id, result) => {
 
 //Peticion ver detalles de evento
 User.showEvent = (id_evento, result) => {
-  const sql = `SELECT ruta_flayer AS flayer, nombre_evento, descripcion, LEFT(fecha_hora, 10) AS fecha, right(fecha_hora, 8) AS hora, lugar FROM evento where id_evento = ?`;
+  const sql = `SELECT id_evento, ruta_flayer AS flayer, nombre_evento, descripcion, LEFT(fecha_hora, 10) AS fecha, right(fecha_hora, 8) AS hora, lugar FROM evento where id_evento = ?`;
 
   db.query(sql, [id_evento], (err, res) => {
     if (err) {
@@ -177,64 +176,6 @@ User.showEvent = (id_evento, result) => {
   });
 };
 
-//Peticion buscar evento, se comenta para probar una busqueda que implemente todos los parametros
-// User.searchEvent = (nombre, date, categoria, lugar, result) => {
-//   // console.log(nombre_evento + '--' + fecha_hora + '--' + id_categoria + '--' + lugar + '--')
-//   let sql = `SELECT * FROM evento WHERE `;
-//   let ya = false;
-//   let parametros = [];
-
-//   if (nombre) {
-//     sql = sql + "nombre_evento LIKE ?";
-//     ya = true;
-//     parametros.push("%" + nombre + "%");
-//   }
-
-//   if (date) {
-//     if (ya) {
-//       sql += " OR ";
-//     }
-//     sql = sql + "fecha_hora LIKE ?";
-//     ya = true;
-//     parametros.push("%" + date + "%");
-//   }
-
-//   if (categoria) {
-//     if (ya) {
-//       sql += " OR ";
-//     }
-//     sql =
-//       sql +
-//       "id_categoria IN (select id_categoria FROM categoria_evento where descrip_cat LIKE ?)";
-//     ya = true;
-//     parametros.push(categoria);
-//   }
-
-//   if (lugar) {
-//     if (ya) {
-//       sql += " OR ";
-//     }
-//     sql = sql + "lugar LIKE ?";
-//     ya = true;
-//     parametros.push("%" + lugar + "%");
-//   }
-
-//   if (!ya) {
-//     sql = `SELECT * FROM evento`;
-//   }
-
-//   console.log ("sql: "+ sql);
-//   console.log (parametros);
-  
-//   db.query(sql, parametros, (err, res) => {
-
-//     if (err) {
-//       result(err, null);
-//     } else {
-//       result(null, res);
-//     }
-//   });
-// };
 
 //Buscar evento revisando todos los parametros de la tabla
 User.searchEvent = (busqueda, result) => {
@@ -252,16 +193,50 @@ User.searchEvent = (busqueda, result) => {
 
 //Peticion cambiar estado de evento
 User.eventStatus = (id_usuario, id_evento, id_estado, result) => {
-  const sql = `INSERT INTO evento_interes (id_usuario, id_evento, id_estado) VALUES (?, ?, ?)`;
+  const sql = `SELECT COUNT(*) AS datos_existentes FROM evento_interes where id_usuario = ? AND id_evento = ?;`;
   db.query(sql, [id_usuario, id_evento, id_estado], (err, res) => {
     if (err) {
       result(err, null);
     } else {
-      result(null, res);
+      if (res[0].datos_existentes == 0) {
+        const sql = `SET foreign_key_checks = 0;`;
+        db.query(sql, [id_estado, id_usuario, id_evento], (err, res) => {
+          if (err) {
+            result(err, null);
+          } else {
+            const sql = `INSERT INTO evento_interes (id_estado, id_usuario, id_evento) VALUES (?, ?, ?)`;
+            db.query(sql, [id_estado, id_usuario, id_evento], (err, res) => {
+              if (err) {
+                result(err, null);
+              } else {
+                const sql = `SET foreign_key_checks = 1;`;
+                db.query(sql, [id_estado, id_usuario, id_evento], (err, res) => {
+                  if (err) {
+                    result(err, null);
+                  } else {
+                    result(null, res);
+                  }
+                });
+              }
+            });
+          }
+        });
+      }
+      else {
+        const sql = `UPDATE evento_interes SET id_estado = ? WHERE id_usuario = ? AND id_evento = ?`;
+        db.query(sql, [id_estado, id_usuario, id_evento], (err, res) => {
+          if (err) {
+            result(err, null);
+          } else {
+            result(null, res);
+          }
+        });
     }
-  });
+  }});
 };
 
+
+//UPDATE evento_interes SET id_estado = ? WHERE id_usuario = ? AND id_evento = ?
 
 //Peticion buscar evento segun id usuario
 User.searchEventByUserId = (id, nombre, date, categoria, lugar, result) => {
