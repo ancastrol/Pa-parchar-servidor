@@ -16,7 +16,7 @@ Organizer.getAll = (result) => {
 
 //traer mis eventos por id usuario
 Organizer.getMyEvents = (id, result) => {
-  const sql = `SELECT e.id_evento, e.nombre_evento, e.ruta_imagen, LEFT(e.fecha_hora,10) as fecha, RIGHT(e.fecha_hora, 8) as hora, e.disponibilidad, e.descripcion, o.descrip_cat
+  const sql = `SELECT e.id_evento, e.nombre_evento, e.ruta_imagen, LEFT(e.fecha_hora,10) as fecha, RIGHT(e.fecha_hora, 8) as hora, e.disponibilidad, e.descripcion, o.descrip_cat, e.lugar
 FROM evento e JOIN categoria_evento o ON e.id_categoria = o.id_categoria where id_usuario = ${id};`;
 
   db.query(sql, [id], (err, res) => {
@@ -25,17 +25,16 @@ FROM evento e JOIN categoria_evento o ON e.id_categoria = o.id_categoria where i
       result(err, null);
     } else {
       result(null, res);
-      console.log(res);
     }
-  }
-  );
-}
+  });
+};
 
 //Petición organizar fecha ascendntemente
 Organizer.fechaASC = (id, result) => {
   db.query(
-    `SELECT e.id_evento, e.nombre_evento, LEFT(e.fecha_hora,10) as fecha, RIGHT(e.fecha_hora, 8) as hora, e.disponibilidad, e.descripcion, o.descrip_cat
-FROM evento e JOIN categoria_evento o ON e.id_categoria = o.id_categoria where id_usuario = ${id} ORDER BY fecha_hora ASC;`,[id],
+    `SELECT e.id_evento, e.nombre_evento,e.ruta_imagen, LEFT(e.fecha_hora,10) as fecha, RIGHT(e.fecha_hora, 8) as hora, e.disponibilidad, e.descripcion, o.descrip_cat, e.lugar
+FROM evento e JOIN categoria_evento o ON e.id_categoria = o.id_categoria where id_usuario = ${id} ORDER BY fecha_hora ASC;`,
+    [id],
     (err, res) => {
       if (err) {
         console.log("error: ", err);
@@ -49,8 +48,9 @@ FROM evento e JOIN categoria_evento o ON e.id_categoria = o.id_categoria where i
 //Petición organizar fecha descendentemente
 Organizer.fechaDESC = (id, result) => {
   db.query(
-    `SELECT e.id_evento, e.nombre_evento, LEFT(e.fecha_hora,10) as fecha, RIGHT(e.fecha_hora, 8) as hora, e.disponibilidad, e.descripcion, o.descrip_cat
+    `SELECT e.id_evento, e.nombre_evento,e.ruta_imagen, LEFT(e.fecha_hora,10) as fecha, RIGHT(e.fecha_hora, 8) as hora, e.disponibilidad, e.descripcion, o.descrip_cat, e.lugar
 FROM evento e JOIN categoria_evento o ON e.id_categoria = o.id_categoria where id_usuario = ${id} ORDER BY fecha_hora DESC;`,
+    [id],
     (err, res) => {
       if (err) {
         console.log("error: ", err);
@@ -64,8 +64,9 @@ FROM evento e JOIN categoria_evento o ON e.id_categoria = o.id_categoria where i
 //Petición organizar categoria ascendentemente
 Organizer.categoriaASC = (id, result) => {
   db.query(
-    `SELECT e.id_evento, e.nombre_evento, LEFT(e.fecha_hora,10) as fecha, RIGHT(e.fecha_hora, 8) as hora, e.disponibilidad, e.descripcion, o.descrip_cat
+    `SELECT e.id_evento, e.nombre_evento,e.ruta_imagen, LEFT(e.fecha_hora,10) as fecha, RIGHT(e.fecha_hora, 8) as hora, e.disponibilidad, e.descripcion, o.descrip_cat, e.lugar
 FROM evento e JOIN categoria_evento o ON e.id_categoria = o.id_categoria where id_usuario = ${id} ORDER BY e.id_categoria ASC;`,
+    [id],
     (err, res) => {
       if (err) {
         console.log("error: ", err);
@@ -80,8 +81,9 @@ FROM evento e JOIN categoria_evento o ON e.id_categoria = o.id_categoria where i
 //Petición organizar categoria descendente
 Organizer.categoriaDESC = (id, result) => {
   db.query(
-    `SELECT e.id_evento, e.nombre_evento, LEFT(e.fecha_hora,10) as fecha, RIGHT(e.fecha_hora, 8) as hora, e.disponibilidad, e.descripcion, o.descrip_cat
+    `SELECT e.id_evento, e.nombre_evento,e.ruta_imagen, LEFT(e.fecha_hora,10) as fecha, RIGHT(e.fecha_hora, 8) as hora, e.disponibilidad, e.descripcion, o.descrip_cat, e.lugar
 FROM evento e JOIN categoria_evento o ON e.id_categoria = o.id_categoria where id_usuario = ${id} ORDER BY e.id_categoria DESC;`,
+    [id],
     (err, res) => {
       if (err) {
         console.log("error: ", err);
@@ -94,11 +96,11 @@ FROM evento e JOIN categoria_evento o ON e.id_categoria = o.id_categoria where i
 };
 
 //Peticion cambiar datos evento
-Organizer.updateEvent = (organizer,  result) => {
-  const sql= `UPDATE evento SET nombre_evento = ?, descripcion = ?, fecha_hora = ?, lugar = ?, direccion = ?, id_categoria = ?, disponibilidad = ?, ruta_imagen = ?, link_compra = ? WHERE id_evento = ?`;
+Organizer.updateEvent = (organizer, result) => {
+  const sql = `UPDATE evento SET nombre_evento = ?, descripcion = ?, fecha_hora = ?, lugar = ?, direccion = ?, id_categoria = ?, disponibilidad = ?, ruta_imagen = ?, link_compra = ? WHERE id_evento = ?`;
 
   db.query(
-    sql, 
+    sql,
     [
       organizer.nombre_evento,
       organizer.descripcion,
@@ -109,27 +111,26 @@ Organizer.updateEvent = (organizer,  result) => {
       organizer.disponibilidad,
       organizer.ruta_imagen,
       organizer.link_compra,
-      organizer.id_evento
+      organizer.id_evento,
     ],
-    (err,res) =>{
-      if(err){
-        console.log('error: ', err);
-        result(err,null);
-      }
-      else{
-        console.log('Evento actualizado: ', res);
-        result(null, res, {message: 'Evento actualizado'});
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(err, null);
+      } else {
+        console.log("Evento actualizado: ", res);
+        result(null, res, { message: "Evento actualizado" });
       }
     }
-  )
+  );
 };
 
 //Peticion crear evento
-Organizer.createEvent = (organizer,  result) => {
-  const sql= `INSERT INTO evento (nombre_evento, descripcion, fecha_hora, lugar, direccion, id_categoria, disponibilidad, ruta_imagen, link_compra, id_usuario) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
+Organizer.createEvent = (organizer, result) => {
+  const sql = `INSERT INTO evento (nombre_evento, descripcion, fecha_hora, lugar, direccion, id_categoria, disponibilidad, ruta_imagen, link_compra, id_usuario) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
 
   db.query(
-    sql, 
+    sql,
     [
       organizer.nombre_evento,
       organizer.descripcion,
@@ -140,19 +141,18 @@ Organizer.createEvent = (organizer,  result) => {
       organizer.disponibilidad,
       organizer.ruta_imagen,
       organizer.link_compra,
-      organizer.id_usuario
+      organizer.id_usuario,
     ],
-    (err,res) =>{
-      if(err){
-        console.log('error: ', err);
-        result(err,null);
-      }
-      else{
-        console.log('Evento creado: ', res);
-        result(null, res, {message: 'Evento creado'});
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(err, null);
+      } else {
+        console.log("Evento creado: ", res);
+        result(null, res, { message: "Evento creado" });
       }
     }
-  )
+  );
 };
 
 //Peticion elimiar/desactivar evento
@@ -167,16 +167,3 @@ Organizer.desactiveEvent = (id, result) => {
 };
 
 module.exports = Organizer;
-
-// Organizer.eventASC = (result) => {
-// const sql = `SELECT nombre_evento, fecha_hora, descripcion, id_categoria, disponibilidad FROM evento WHERE id_usuario = ${id} ORDER BY fecha_hora ASC;`;
-
-// db.query(sql, [], (err, res) => {
-//   if (err) {
-// console.log("error: ", err);
-// result(err, null);
-//   } else {
-// result(null, res);
-//   }
-// });
-//   };
