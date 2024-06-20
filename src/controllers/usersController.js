@@ -264,6 +264,25 @@ module.exports = {
     });
   },
 
+  //Peticion eventos calendario
+  calendar(req, res) {
+    const month = req.params.month;
+    User.calendar(month, (err, data) => {
+      if (err) {
+        return res.status(501).json({
+          success: false,
+          message: "Error al buscar eventos",
+          error: err,
+        });
+      }
+      return res.status(202).json({
+        success: true,
+        message: "Peticion aceptada",
+        data: data,
+      });
+    });
+  },
+
   //Peticion buscar evento
   searchEvent(req, res) {
     const busqueda = req.body.searchElement;

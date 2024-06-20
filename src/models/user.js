@@ -224,6 +224,20 @@ User.showEvent = (id_evento, result) => {
   });
 };
 
+//Peticion ver eventos calendario
+User.calendar = (month, result) => {
+  const sql = `SELECT DATE_FORMAT(fecha_hora, '%Y-%c-%e') as fecha, left(nombre_evento, 15) as nombre FROM evento WHERE month(fecha_hora) = ? order by fecha_hora`;
+
+  db.query(sql, [month], (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+    } else {
+      result(null, res);
+    }
+  });
+};
+
 
 //Buscar evento revisando todos los parametros de la tabla
 User.searchEvent = (busqueda, result) => {
