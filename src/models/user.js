@@ -87,6 +87,18 @@ User.getProfile = (id, result) => {
   });
 };
 
+//Peticion cambiar nombre usuario
+User.changeName = (user, result) => {
+  const sql = `UPDATE usuario SET nombre = ? WHERE id_usuario = ?`;
+  db.query(sql, [user.nombre, user.id_usuario], (err, res) => {
+    if (err) {
+      result(err, null);
+    } else {
+      result(null, res);
+    }
+  });
+};
+
 //Peticion para ingresar eventos al carrousel
 User.eventsCarrousel = (result) => {
   const sql = `SELECT id_evento, nombre_evento, left(descripcion,800) as descripcion, left(fecha_hora, 19) AS fecha_hora, ruta_imagen FROM evento WHERE fecha_hora > curdate() ORDER by fecha_hora ASC LIMIT 3`;

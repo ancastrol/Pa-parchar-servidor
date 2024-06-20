@@ -39,6 +39,25 @@ module.exports = {
     });
   },
 
+  //Peticion cambiar nombre de usuario
+  changeName(req, res){
+    const user = req.body;
+    User.changeName(user, (err, data) => {
+      if (err) {
+        return res.status(501).json({
+          success: false,
+          message: "Error al cambiar nombre de usuario",
+          error: err,
+        });
+      }
+      return res.status(201).json({
+        success: true,
+        message: "Nombre cambiado exitosamente",
+        data: data,
+      });
+    });
+  },
+
   //Peticion obtener usuarios
   getAll(req, res) {
     User.getAll((err, data) => {

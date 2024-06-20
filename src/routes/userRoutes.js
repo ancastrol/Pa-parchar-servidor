@@ -5,6 +5,7 @@ router.post("/crearUsuario", usersController.register);
 router.get("/usuario", usersController.getAll);
 router.post("/usuario/login", usersController.searchLogin);
 router.get("/usuario/:id", usersController.getById);
+router.post("usuario/changeName", usersController.changeName);
 router.get("/perfil/:id", usersController.getProfile);
 router.get("/principal", usersController.mainPage);
 router.get("/principal/eventsCarrousel", usersController.eventsCarrousel);
