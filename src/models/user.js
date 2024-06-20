@@ -113,12 +113,24 @@ User.changeEmail = (user, result) => {
 
 //Peticion cambiar contraseña usuario
 User.changePassword = (user, result) => {
-  const sql = `UPDATE usuario SET contrasenia = ? WHERE id_usuario = ?`;
-  db.query(sql, [user.contrasenia, user.id_usuario], (err, res) => {
+  const sql = `SELECT contrasenia from usuario where id_usuario = ?`;
+  db.query(sql, [user.id_usuario], (err, res) => {
     if (err) {
       result(err, null);
-    } else {
-      result(null, res);
+    } 
+    else {
+      if (res[0].contrasenia == user.contrasenia) {
+        const sql = `UPDATE usuario SET contrasenia = ? WHERE id_usuario = ?`;
+        db.query(sql, [user.newContrasenia, user.id_usuario], (err, res) => {
+          if (err) {
+            result(err, null);
+          } else {
+            result(null, res);
+          }
+        });
+      } else {
+        result(null, { message: "Contraseña incorrecta" });
+      }
     }
   });
 };

@@ -90,7 +90,7 @@ module.exports = {
       }
       return res.status(201).json({
         success: true,
-        message: "Contraseña cambiada exitosamente",
+        message: res.message,
         data: data,
       });
     });
