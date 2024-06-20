@@ -99,6 +99,30 @@ User.changeName = (user, result) => {
   });
 };
 
+//Peticion cambiar correo usuario
+User.changeEmail = (user, result) => {
+  const sql = `UPDATE usuario SET correo = ? WHERE id_usuario = ?`;
+  db.query(sql, [user.correo, user.id_usuario], (err, res) => {
+    if (err) {
+      result(err, null);
+    } else {
+      result(null, res);
+    }
+  });
+};
+
+//Peticion cambiar contraseña usuario
+User.changePassword = (user, result) => {
+  const sql = `UPDATE usuario SET contrasenia = ? WHERE id_usuario = ?`;
+  db.query(sql, [user.contrasenia, user.id_usuario], (err, res) => {
+    if (err) {
+      result(err, null);
+    } else {
+      result(null, res);
+    }
+  });
+};
+
 //Peticion para ingresar eventos al carrousel
 User.eventsCarrousel = (result) => {
   const sql = `SELECT id_evento, nombre_evento, left(descripcion,800) as descripcion, left(fecha_hora, 19) AS fecha_hora, ruta_imagen FROM evento WHERE fecha_hora > curdate() ORDER by fecha_hora ASC LIMIT 3`;

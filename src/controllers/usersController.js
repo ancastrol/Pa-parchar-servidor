@@ -58,6 +58,44 @@ module.exports = {
     });
   },
 
+  //Peticion cambiar correo de usuario
+  changeEmail(req, res){
+    const user = req.body;
+    User.changeEmail(user, (err, data) => {
+      if (err) {
+        return res.status(501).json({
+          success: false,
+          message: "Error al cambiar correo de usuario",
+          error: err,
+        });
+      }
+      return res.status(201).json({
+        success: true,
+        message: "Correo cambiado exitosamente",
+        data: data,
+      });
+    });
+  },
+
+  //Peticion cambiar contraseña de usuario
+  changePassword(req, res){
+    const user = req.body;
+    User.changePassword(user, (err, data) => {
+      if (err) {
+        return res.status(501).json({
+          success: false,
+          message: "Error al cambiar contraseña de usuario",
+          error: err,
+        });
+      }
+      return res.status(201).json({
+        success: true,
+        message: "Contraseña cambiada exitosamente",
+        data: data,
+      });
+    });
+  },
+  
   //Peticion obtener usuarios
   getAll(req, res) {
     User.getAll((err, data) => {

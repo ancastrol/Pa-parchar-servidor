@@ -6,6 +6,8 @@ router.get("/usuario", usersController.getAll);
 router.post("/usuario/login", usersController.searchLogin);
 router.get("/usuario/:id", usersController.getById);
 router.post("usuario/changeName", usersController.changeName);
+router.post("usuario/changeEmail", usersController.changeEmail);
+router.post("usuario/changePassword", usersController.changePassword);
 router.get("/perfil/:id", usersController.getProfile);
 router.get("/principal", usersController.mainPage);
 router.get("/principal/eventsCarrousel", usersController.eventsCarrousel);
