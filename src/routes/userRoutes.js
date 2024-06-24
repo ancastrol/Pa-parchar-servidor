@@ -16,7 +16,7 @@ router.get("/principal/:id", usersController.mainPageById);
 router.get("/principal/eventsCarrousel/:id", usersController.eventsCarrouselId);
 router.get("/evento/:id", usersController.showEvent);
 router.post("/estadoEvento", usersController.eventStatus);
-router.get("/calendario/:month", usersController.calendar)
+router.get("/calendario/:month&:id", usersController.calendar)
 router.post("/busqueda", usersController.searchEvent); 
 router.get("/buscar", usersController.searchEventByUserId);
 router.post("/usuario/:id/nombre",usersController.updateNameUser);

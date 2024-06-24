@@ -225,10 +225,11 @@ User.showEvent = (id_evento, result) => {
 };
 
 //Peticion ver eventos calendario
-User.calendar = (month, result) => {
-  const sql = `SELECT DATE_FORMAT(fecha_hora, '%Y-%c-%e') as fecha, left(nombre_evento, 15) as nombre FROM evento WHERE month(fecha_hora) = ? order by fecha_hora`;
+User.calendar = (data, result) => {
+  const sql = `SELECT id_evento, DATE_FORMAT(fecha_hora, '%Y-%c-%e') as fecha, left(nombre_evento, 15) as nombre FROM evento WHERE month(fecha_hora) = ? and 
+  id_evento in (SELECT id_evento FROM evento_interes WHERE id_estado !=4 AND id_estado != 1 AND id_usuario = ?) order by fecha_hora`;
 
-  db.query(sql, [month], (err, res) => {
+  db.query(sql, [data.month, data.id], (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);

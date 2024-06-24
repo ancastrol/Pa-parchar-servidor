@@ -268,7 +268,9 @@ module.exports = {
   //Peticion eventos calendario
   calendar(req, res) {
     const month = req.params.month;
-    User.calendar(month, (err, data) => {
+    const user = req.params.id
+    const data = {month : month, id:user}
+    User.calendar(data, (err, data) => {
       if (err) {
         return res.status(501).json({
           success: false,
