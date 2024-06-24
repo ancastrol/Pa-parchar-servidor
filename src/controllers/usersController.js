@@ -1,5 +1,6 @@
 const User = require("../models/user");
 module.exports = {
+  
   //Peticion login
   searchLogin(req, res) {
     const user = req.body; //Datos del usuario desde el front-end
