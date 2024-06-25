@@ -125,6 +125,36 @@ Organizer.updateEvent = (organizer, result) => {
   );
 };
 
+//Peticion actualizar evento
+Organizer.updateEvent = (organizer, result) => {
+  const sql = `UPDATE evento SET nombre_evento = ?, descripcion = ?, fecha_hora = ?, lugar = ?, direccion = ?, id_categoria = ?, disponibilidad = ?, ruta_imagen = ?, link_compra = ? WHERE id_evento = ?`;
+
+  db.query(
+    sql,
+    [
+      organizer.nombre_evento,
+      organizer.descripcion,
+      organizer.fecha_hora,
+      organizer.lugar,
+      organizer.direccion,
+      organizer.id_categoria,
+      organizer.disponibilidad,
+      organizer.ruta_imagen,
+      organizer.link_compra,
+      organizer.id_evento,
+    ],
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(err, null);
+      } else {
+        console.log("Evento actualizado: ", res);
+        result(null, res, { message: "Evento actualizado" });
+      }
+    }
+  );
+};
+
 //Peticion crear evento
 Organizer.createEvent = (organizer, result) => {
   const sql = `INSERT INTO evento (nombre_evento, descripcion, fecha_hora, lugar, direccion, id_categoria, disponibilidad, ruta_imagen, link_compra, id_usuario) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
@@ -150,6 +180,35 @@ Organizer.createEvent = (organizer, result) => {
       } else {
         console.log("Evento creado: ", res);
         result(null, res, { message: "Evento creado" });
+      }
+    }
+  );
+};
+
+//Peticion actualizar evento
+Organizer.updateEvent = (organizer, result) => {
+  const sql = `UPDATE evento SET nombre_evento = ?, descripcion = ?, fecha_hora = ?, lugar = ?, direccion = ?, id_categoria = ?, disponibilidad = ?, link_compra = ? WHERE id_evento = ?`;
+
+  db.query(
+    sql,
+    [
+      organizer.nombre_evento,
+      organizer.descripcion,
+      organizer.fecha_hora,
+      organizer.lugar,
+      organizer.direccion,
+      organizer.id_categoria,
+      organizer.disponibilidad,
+      organizer.link_compra,
+      organizer.id_evento,
+    ],
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(err, null);
+      } else {
+        console.log("Evento actualizado: ", res);
+        result(null, res, { message: "Evento actualizado" });
       }
     }
   );

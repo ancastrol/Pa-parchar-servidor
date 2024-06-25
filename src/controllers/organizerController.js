@@ -155,6 +155,25 @@ module.exports = {
     });
   },
 
+  //Peticion actualizar evento
+  updateEvent(req, res) {
+    const organizer = req.body;
+    Organizer.updateEvent(organizer, (err, data) => {
+      if (err) {
+        return res.status(501).json({
+          success: false,
+          message: "Error al actualizar datos evento",
+          error: err,
+        });
+      }
+      return res.status(202).json({
+        success: true,
+        message: "Peticion aceptada",
+        data: data,
+      });
+    });
+  },
+
   //Peticion desactivar usuario
   desactiveEvent(req, res) {
     console.log("En el controlador");
