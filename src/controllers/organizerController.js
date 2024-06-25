@@ -139,7 +139,6 @@ module.exports = {
   //Peticion crear evento
   createEvent(req, res) {
     const organizer = req.body;
-    console.log("En el controlador ", organizer);
     Organizer.createEvent(organizer, (err, data) => {
       if (err) {
         return res.status(501).json({

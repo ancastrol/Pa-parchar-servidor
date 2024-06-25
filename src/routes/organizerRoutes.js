@@ -9,7 +9,7 @@ router.get('/organizer/:id/fechaDESC',usersController.fechaDESC);
 router.get('/organizer/:id/categoriaASC',usersController.categoriaASC);
 router.get('/organizer/:id/categoriaDESC',usersController.categoriaDESC);
 router.post('/organizer',usersController.updateEvent);
-router.put('/organizer',usersController.createEvent);
+router.post('/organizer/evento',usersController.createEvent);
 router.delete("/organizer/evento/:id",usersController.desactiveEvent);
 
 module.exports = router;
