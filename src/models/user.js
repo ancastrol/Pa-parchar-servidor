@@ -212,7 +212,7 @@ User.mainPagebyId = (id, result) => {
 
 //Peticion ver detalles de evento
 User.showEvent = (id_evento, result) => {
-  const sql = `SELECT id_evento, ruta_flayer AS flayer, nombre_evento, descripcion, LEFT(fecha_hora, 10) AS fecha, right(fecha_hora, 8) AS hora, lugar, link_compra FROM evento where id_evento = ?`;
+  const sql = `SELECT id_evento, ruta_flayer AS flayer, nombre_evento, descripcion, LEFT(fecha_hora, 10) AS fecha, right(fecha_hora, 8) AS hora, lugar, link_compra,| direccion, disponibilidad FROM evento where id_evento = ?`;
 
   db.query(sql, [id_evento], (err, res) => {
     if (err) {
