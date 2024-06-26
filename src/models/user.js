@@ -427,12 +427,40 @@ User.updateImageProfileUser = (user, result) => {
 
 //Peticion elimiar/desactivar cuenta
 User.desactiveProfileUser = (id, result) => {
-  const sql = `UPDATE usuario SET status = 0 WHERE id_usuario = ?`;
+  const sql = `UPDATE usuario SET estatus = estatus XOR 1 WHERE id_usuario = ? and estatus != 3;`;
   db.query(sql, [id], (err, res) => {
     if (err) {
       result(err, null);
     } else {
       result(null, res);
+    }
+  });
+};
+
+//Peticion eliminar cuenta
+User.deleteProfileUser = (id, result) => {
+  const sql = `SET FOREIGN_KEY_CHECKS = 0;`;
+  db.query(sql, [], (err, res) => {
+    if (err) {
+      result(err, null);
+    } 
+    else {
+      const sql = `DELETE FROM usuario WHERE id_usuario = ? and estatus != 3;`;
+      db.query(sql, [id], (err, res) => {
+        if (err) {
+          result(err, null);
+        } 
+        else {
+          const sql = `SET FOREIGN_KEY_CHECKS = 1;`;
+          db.query(sql, [], (err, res) => {
+            if (err) {
+              result(err, null);
+            } else {
+              result(null, res);
+            }
+          });
+        }
+      });
     }
   });
 };

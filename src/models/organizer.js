@@ -95,66 +95,6 @@ FROM evento e JOIN categoria_evento o ON e.id_categoria = o.id_categoria where i
   );
 };
 
-//Peticion cambiar datos evento
-Organizer.updateEvent = (organizer, result) => {
-  const sql = `UPDATE evento SET nombre_evento = ?, descripcion = ?, fecha_hora = ?, lugar = ?, direccion = ?, id_categoria = ?, disponibilidad = ?, ruta_imagen = ?, link_compra = ? WHERE id_evento = ?`;
-
-  db.query(
-    sql,
-    [
-      organizer.nombre_evento,
-      organizer.descripcion,
-      organizer.fecha_hora,
-      organizer.lugar,
-      organizer.direccion,
-      organizer.id_categoria,
-      organizer.disponibilidad,
-      organizer.ruta_imagen,
-      organizer.link_compra,
-      organizer.id_evento,
-    ],
-    (err, res) => {
-      if (err) {
-        console.log("error: ", err);
-        result(err, null);
-      } else {
-        console.log("Evento actualizado: ", res);
-        result(null, res, { message: "Evento actualizado" });
-      }
-    }
-  );
-};
-
-//Peticion actualizar evento
-Organizer.updateEvent = (organizer, result) => {
-  const sql = `UPDATE evento SET nombre_evento = ?, descripcion = ?, fecha_hora = ?, lugar = ?, direccion = ?, id_categoria = ?, disponibilidad = ?, ruta_imagen = ?, link_compra = ? WHERE id_evento = ?`;
-
-  db.query(
-    sql,
-    [
-      organizer.nombre_evento,
-      organizer.descripcion,
-      organizer.fecha_hora,
-      organizer.lugar,
-      organizer.direccion,
-      organizer.id_categoria,
-      organizer.disponibilidad,
-      organizer.ruta_imagen,
-      organizer.link_compra,
-      organizer.id_evento,
-    ],
-    (err, res) => {
-      if (err) {
-        console.log("error: ", err);
-        result(err, null);
-      } else {
-        console.log("Evento actualizado: ", res);
-        result(null, res, { message: "Evento actualizado" });
-      }
-    }
-  );
-};
-
 //Peticion crear evento
 Organizer.createEvent = (organizer, result) => {
   const sql = `INSERT INTO evento (nombre_evento, descripcion, fecha_hora, lugar, direccion, id_categoria, disponibilidad, ruta_imagen, link_compra, id_usuario) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
@@ -214,10 +154,60 @@ Organizer.updateEvent = (organizer, result) => {
   );
 };
 
-//Peticion elimiar/desactivar evento
-Organizer.desactiveEvent = (id, result) => {
-  db.query(`DELETE FROM evento WHERE id_evento = ${id}`, (err, res) => {
+Organizer.getAllEvents = (result) => {
+  const sql = `SELECT * FROM evento`;
+
+  db.query(sql, [], (err, res) => {
     if (err) {
+      console.log("error: ", err);
+      result(err, null);
+    } else {
+      result(null, res);
+    }
+  });
+};
+
+//Peticion elimiar evento
+Organizer.deleteEvent = (id, result) => {
+  const sql = `SET FOREIGN_KEY_CHECKS = 0;`;
+
+  db.query(sql, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+    } 
+    else {
+      const sql = `DELETE FROM evento WHERE id_evento = ?`;
+      db.query(sql, [id], (err, res) => {
+        console.log("id", id);
+        if (err) {
+          console.log("error: ", err);
+          result(err, null);
+        }
+        else {
+          const sql = `SET FOREIGN_KEY_CHECKS = 1;`;
+          db.query(sql, (err, res) => {
+            if (err) {
+              console.log("error: ", err);
+              result(err, null);
+            }
+            else {
+              console.log("Evento eliminado: ", res);
+              result(null, res, { message: "Evento eliminado" });
+            }
+          });
+        }
+      });
+    }
+  });
+};
+
+Organizer.getAllUsers = (result) => {
+  const sql = `SELECT * FROM usuario`;
+
+  db.query(sql, [], (err, res) => {
+    if (err) {
+      console.log("error: ", err);
       result(err, null);
     } else {
       result(null, res);

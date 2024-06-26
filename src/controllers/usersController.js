@@ -439,7 +439,7 @@ module.exports = {
   //Peticion desactivar usuario
   desactiveProfileUser(req, res) {
     console.log("En el controlador");
-    const id = req.params.id;
+    const id = req.body.id_usuario;
     User.desactiveProfileUser(id, (err, data) => {
       if (err) {
         return res.status(501).json({
@@ -448,10 +448,37 @@ module.exports = {
           error: err,
         });
       }
+      if(data.affectedRows == 0){
+        return res.status(202).json({
+        success: false,
+        message: "No se puede Bloquear al administrador",
+        data: data,
+        });
+      }
       return res.status(202).json({
         success: true,
-        message: "Perfil desactivado exitosamente",
+        message: "Perfil cambiado de estado exitosamente",
         data: data,
+      });
+    });
+  },
+
+  //Peticion eliminar usuario
+  deleteProfileUser(req, res) {
+    console.log("En el controlador");
+    const id = req.body.id_usuario;
+    User.deleteProfileUser(id, (err, data) => {
+      if (err) {
+        return res.status(501).json({
+          success: false,
+          message: "Error al eliminar perfil",
+          error: err,
+        });
+      }
+      return res.status(202).json({
+          success: true,
+          message: "Perfil eliminado exitosamente",
+          data: data,
       });
     });
   },

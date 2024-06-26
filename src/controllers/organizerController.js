@@ -1,3 +1,4 @@
+const { get } = require("http");
 const Organizer = require("../models/organizer");
 const router = require("../routes/organizerRoutes");
 
@@ -174,12 +175,28 @@ module.exports = {
     });
   },
 
-  //Peticion desactivar usuario
-  desactiveEvent(req, res) {
-    console.log("En el controlador");
-    const id = req.params.id || null;
+  getAllEvents(req, res) {
+    Organizer.getAllEvents((err, data) => {
+      if (err) {
+        res.status(501).json({
+          success: false,
+          message: "Error al obtener los eventos",
+          error: err,
+        });
+      }
+      return res.status(200).json({
+        success: true,
+        message: "Eventos obtenidos",
+        data: data,
+      });
+    });
+  },
 
-    Organizer.desactiveEvent(id, (err, data) => {
+  //Peticion eliminar evento
+  deleteEvent(req, res) {
+    const id = req.body.id_evento;
+
+    Organizer.deleteEvent(id, (err, data) => {
       if (err) {
         return res.status(501).json({
           success: false,
@@ -207,4 +224,23 @@ module.exports = {
       });
     });
   },
+
+  //Peticion traer todos los usuarios
+  getAllUsers(req, res) {
+    Organizer.getAllUsers((err, data) => {
+      if (err) {
+        res.status(501).json({
+          success: false,
+          message: "Error al obtener los usuarios",
+          error: err,
+        });
+      };
+      return res.status(200).json({
+        success: true,
+        message: "Usuarios obtenidos",
+        data: data,
+      });
+    });
+  },
+
 };

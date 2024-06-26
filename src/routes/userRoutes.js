@@ -23,6 +23,7 @@ router.post("/usuario/:id/nombre",usersController.updateNameUser);
 router.post("/usuario/correo",usersController.updateEmailUser);
 router.post("/usuario/contrasenia",usersController.updatePasswordUser);
 router.post("/usuario/imagenPerfil",usersController.updateImageProfileUser);
-router.put("/usuario/:id",usersController.desactiveProfileUser);
+router.put("/admin/bloquearUsuario",usersController.desactiveProfileUser);
+router.delete("/admin/eliminarUsuario",usersController.deleteProfileUser);
 
 module.exports = router;
